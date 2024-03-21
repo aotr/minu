@@ -49,7 +49,3 @@ Minu's behavior can be customized further by defining additional handlers and le
 ## Contributing
 
 Contributions to Minu are welcome! Whether it's reporting issues, submitting fixes, or proposing new features, we appreciate your input and encourage collaboration to make Minu even better.
-
----
-
-Minu is open-source and freely available for personal and commercial use. For more information, support, and documentation, please visit the [Minu GitHub repository](#).
