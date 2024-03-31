@@ -8,15 +8,14 @@
 </head>
 <body>
 
-<span minu-get="https://www.google.com/" minu-trigger="load">
+<span minu-get="/example/simple/demo.html" minu-trigger="load">
     <span minu-loader>Loading...</span>
     <div minu-content>
         
     </div>
 </span>
-
+<script src="../../minu.js"></script>
 <script>
-    
     document.addEventListener('DOMContentLoaded', function() {
         minu.init('[minu-get]');
     });
