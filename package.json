@@ -1,6 +1,6 @@
 {
   "name": "minu",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minu is a lightweight, dependency-free JavaScript library for dynamic markup injection and efficient network interactions in web applications. It offers ease of use and straightforward integration, making it ideal for enhancing functionality without the overhead of larger frameworks.",
   "main": "minu.js",
   "dependencies": {
