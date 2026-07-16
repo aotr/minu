@@ -95,22 +95,49 @@ The secure version uses DOMPurify for full XSS protection. If DOMPurify is not a
 
 ## Examples
 
-Run the examples locally:
+### Quick Setup
+
 ```bash
 git clone https://github.com/aotr/minu.git
 cd minu
 npm install
 npm run build
-npm run examples
+npx serve .
 ```
 
-Then open `http://localhost:3000/example/basic/`.
+Then open in your browser:
 
-| Example | What it shows |
-|---------|---------------|
-| [Basic](example/basic/index.html) | Auto-load content on page load |
-| [Form](example/form/index.html) | Submit form, show server response |
-| [Tabs](example/tabs/index.html) | Click-triggered content swap |
+| Example | URL | What it shows |
+|---------|-----|---------------|
+| Basic | [http://localhost:3000/example/basic/](http://localhost:3000/example/basic/) | Auto-load content on page load |
+| Form | [http://localhost:3000/example/form/](http://localhost:3000/example/form/) | Submit form, show server response |
+| Tabs | [http://localhost:3000/example/tabs/](http://localhost:3000/example/tabs/) | Click-triggered content swap |
+
+### Running Individual Examples
+
+```bash
+# From project root, serve only one example
+npx serve example/basic
+# → http://localhost:3000
+```
+
+### Using CDN (No Build Required)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/minu/dist/minu.min.js"></script>
+</head>
+<body>
+    <span minu-get="https://jsonplaceholder.typicode.com/posts/1" minu-trigger="load">
+        <div minu-loader>Loading...</div>
+        <div minu-content></div>
+    </span>
+    <script>minu.init();</script>
+</body>
+</html>
+```
 
 ## License
 
