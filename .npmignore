@@ -1,0 +1,6 @@
+src/
+example/
+build.js
+.gitignore
+.DS_Store
+*.log

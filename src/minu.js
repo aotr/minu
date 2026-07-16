@@ -1,15 +1,20 @@
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['dompurify'], factory);
+        define([], factory);
     } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory(require('dompurify'));
+        module.exports = factory();
     } else {
-        root.minu = factory(root.DOMPurify);
+        root.minu = factory();
     }
-}(typeof self !== 'undefined' ? self : this, function(DOMPurify) {
-    
-    const sanitizeHTML = (html) => {
-        return DOMPurify.sanitize(html);
+}(typeof self !== 'undefined' ? self : this, function() {
+
+    const sanitize = (html) => {
+        if (typeof DOMPurify !== 'undefined') {
+            return DOMPurify.sanitize(html);
+        }
+        return html
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+            .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
     };
 
     const dispatchCustomEvent = (element, eventName, detail = {}) => {
@@ -18,23 +23,21 @@
     };
 
     const fetchAndDisplayContent = (url, element) => {
-        
         const loader = element.querySelector('[minu-loader]');
         const contentArea = element.querySelector('[minu-content]');
-        // Show loader if it exists
+
         if (loader) loader.style.display = 'block';
+
         fetch(url)
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok.');
                 return response.text();
             })
             .then(html => {
-                html = sanitizeHTML(html); // Sanitizing HTML with DOMPurify
-                // Update the content area or the whole element if no specific content area defined
+                html = sanitize(html);
                 if (contentArea) {
                     contentArea.innerHTML = html;
                 } else {
-                    // Fallback to updating the entire element if no content area is defined
                     element.innerHTML = html;
                 }
                 dispatchCustomEvent(element, 'minu:contentLoaded', { html });
@@ -44,10 +47,12 @@
                 dispatchCustomEvent(element, 'minu:contentError', { error });
             })
             .finally(() => {
-                if (loader) loader.style.display = 'none'; // Hide loader if present
+                if (loader) loader.style.display = 'none';
             });
     };
-    
+
+    let _deprecationWarned = false;
+
     const init = (selector = '[minu-get]') => {
         const elements = document.querySelectorAll(selector);
         elements.forEach(element => {
@@ -58,7 +63,7 @@
     const setupElement = (element) => {
         const url = element.getAttribute('minu-get');
         const trigger = element.getAttribute('minu-trigger') || 'load';
-        if (trigger === "load") {
+        if (trigger === 'load') {
             fetchAndDisplayContent(url, element);
         } else {
             element.addEventListener(trigger, () => fetchAndDisplayContent(url, element));
@@ -70,7 +75,6 @@
         if (!Array.isArray(selectors)) {
             selectors = [selectors];
         }
-
         selectors.forEach(selector => {
             const elements = document.querySelectorAll(selector);
             elements.forEach(element => {
@@ -82,5 +86,13 @@
         });
     };
 
-    return { init, reloadComponent: reloadComponents, reloadComponents };
+    const reloadComponent = (selectors) => {
+        if (!_deprecationWarned) {
+            console.warn('minu: reloadComponent() is deprecated. Use reloadComponents() instead.');
+            _deprecationWarned = true;
+        }
+        return reloadComponents(selectors);
+    };
+
+    return { init, reloadComponent, reloadComponents };
 }));

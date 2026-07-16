@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Tabs Example</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <h1>Tabs Example</h1>
+    <p>Click a tab to load its content. Each tab loads a different HTML fragment.</p>
+
+    <div class="card">
+        <div class="tab-nav">
+            <span minu-get="tab1.html" minu-trigger="click" class="tab-btn active" onclick="activateTab(this)">Tab 1</span>
+            <span minu-get="tab2.html" minu-trigger="click" class="tab-btn" onclick="activateTab(this)">Tab 2</span>
+            <span minu-get="tab3.html" minu-trigger="click" class="tab-btn" onclick="activateTab(this)">Tab 3</span>
+        </div>
+
+        <div class="loader" minu-loader>Loading tab...</div>
+        <div minu-content>
+            <p style="color: #888;">Click a tab above to load content.</p>
+        </div>
+    </div>
+
+    <h2>How it works</h2>
+    <pre><code>&lt;span minu-get="tab1.html" minu-trigger="click"&gt;
+  Tab 1
+&lt;/span&gt;
+
+&lt;div class="loader" minu-loader&gt;Loading...&lt;/div&gt;
+&lt;div minu-content&gt;&lt;/div&gt;</code></pre>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>
+        function activateTab(el) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            el.classList.add('active');
+        }
+        minu.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Basic Example</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <h1>Basic Example</h1>
+    <p>A price widget loads automatically when the page opens.</p>
+
+    <div class="card">
+        <span minu-get="widget.html" minu-trigger="load">
+            <div class="loader" minu-loader>Loading widget...</div>
+            <div minu-content></div>
+        </span>
+    </div>
+
+    <h2>How it works</h2>
+    <pre><code>&lt;span minu-get="widget.html" minu-trigger="load"&gt;
+  &lt;div class="loader" minu-loader&gt;Loading...&lt;/div&gt;
+  &lt;div minu-content&gt;&lt;/div&gt;
+&lt;/span&gt;</code></pre>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>
+        minu.init();
+    </script>
+</body>
+</html>
