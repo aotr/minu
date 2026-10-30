@@ -21,6 +21,8 @@
     "index.d.ts",
     "readme.md",
     "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
     "LICENSE"
   ],
   "types": "index.d.ts",

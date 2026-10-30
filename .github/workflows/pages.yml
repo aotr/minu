@@ -22,11 +22,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Stage static site
+        run: |
+          mkdir -p site
+          cp -R docs/. site/
+          cp -R example site/example
+          cp demo-api.js site/demo-api.js
+          mkdir -p site/dist
+          cp dist/minu.min.js site/dist/minu.min.js
       - uses: actions/configure-pages@v5
         with:
           enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: site
       - id: deployment
         uses: actions/deploy-pages@v4

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability (private)
+    url: mailto:animesh.aotr@gmail.com?subject=Minu%20security%20report
+    about: Email security reports privately. Do not open a public issue.
+  - name: Documentation and examples
+    url: https://github.com/aotr/minu#readme
+    about: Read the API reference and runnable examples first.

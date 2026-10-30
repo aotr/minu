@@ -1,10 +1,10 @@
 # Minu
 
-[Project page](https://aotr.github.io/minu/) · [npm](https://www.npmjs.com/package/minu) · [Examples](https://github.com/aotr/minu/tree/main/example)
+[Project page](https://aotr.github.io/minu/) · [npm](https://www.npmjs.com/package/minu) · [Examples](https://aotr.github.io/minu/example/)
 
 Lightweight HTML fragment loader. Fetch and inject server-rendered HTML — with
 AJAX, forms, polling, out-of-band swaps, and live SSE content. Zero runtime
-dependencies, ~3.7 KB gzipped.
+dependencies, ~3.7 KB gzipped. MIT licensed; contributions welcome.
 
 Minu is for server-rendered apps that want htmx-style behavior without the
 framework. Your server keeps returning HTML; Minu puts it where it belongs.
@@ -232,6 +232,10 @@ the exact boundary.
 
 ## Security
 
+**Do not open a public issue for a security vulnerability.** Email
+**animesh.aotr@gmail.com** first, with the subject “Minu security report”.
+See [SECURITY.md](SECURITY.md) for scope and disclosure expectations.
+
 `minu.js` strips scripts, inline event handlers, and `javascript:` URLs. It is
 **not an XSS boundary** — regex sanitization never is.
 
@@ -259,23 +263,26 @@ npm run build
 npm run examples   # http://localhost:3000
 ```
 
-| Example | URL | Shows |
+| Example | Live page | Shows |
 |---|---|---|
-| Basic | `/example/basic/` | Auto-load a widget |
-| Form | `/example/form/` | POST, loader, indicator, disable, confirm |
-| Tabs | `/example/tabs/` | Click-triggered shared target |
-| Search | `/example/search/` | Debounce, `changed`, `minu-select` |
-| Polling | `/example/polling/` | `every 2s` and visibility pause |
-| Lazy reveal | `/example/lazy/` | `revealed` / `intersect` |
-| Swap modes | `/example/swap/` | All eight swap behaviors |
-| OOB | `/example/oob/` | One response updates three regions |
-| Headers | `/example/headers/` | `Minu-Trigger`, `Minu-Redirect`, `Minu-Refresh` |
-| Events | `/example/events/` | Lifecycle log and cancellation |
-| JSON | `/example/json/` | JSON attributes vs. JSON responses |
-| Live SSE | `/example/live/` | SSE price + OOB ticker |
+| Basic | https://aotr.github.io/minu/example/basic/ | Auto-load a widget |
+| Form | https://aotr.github.io/minu/example/form/ | POST, loader, indicator, disable, confirm |
+| Tabs | https://aotr.github.io/minu/example/tabs/ | Click-triggered shared target |
+| Search | https://aotr.github.io/minu/example/search/ | Debounce, `changed`, `minu-select` |
+| Polling | https://aotr.github.io/minu/example/polling/ | `every 2s` and visibility pause |
+| Lazy reveal | https://aotr.github.io/minu/example/lazy/ | `revealed` / `intersect` |
+| Swap modes | https://aotr.github.io/minu/example/swap/ | All eight swap behaviors |
+| OOB | https://aotr.github.io/minu/example/oob/ | One response updates three regions |
+| Headers | https://aotr.github.io/minu/example/headers/ | `Minu-Trigger`, `Minu-Redirect`, `Minu-Refresh` |
+| Events | https://aotr.github.io/minu/example/events/ | Lifecycle log and cancellation |
+| JSON | https://aotr.github.io/minu/example/json/ | JSON attributes vs. JSON responses |
+| Live SSE | https://aotr.github.io/minu/example/live/ | SSE price + OOB ticker |
 
-All scenarios run through the zero-dependency `example/server.js`. The
-`npm run demo:live` alias starts the same server for the live SSE page.
+The GitHub Pages site is static, so its dynamic demos use a small browser-side
+adapter that simulates the server responses. The Node demo server is the real
+implementation; run `npm run examples` to use it.
+
+The `npm run demo:live` alias starts the same server for the live SSE page.
 A plain static server will not run the `/demo/*` endpoints.
 
 ## Build & Test
@@ -299,6 +306,18 @@ Outputs: `minu.min.js` / `minu.js` (UMD), `minu.esm.mjs` (ESM), plus the
 - `minu-loader` / `minu-content` keep working.
 - `reloadComponent()` still works (deprecated).
 
+## Contributing
+
+Contributions are welcome: bug reports, docs, examples, tests, and focused
+features. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the setup, test, and PR
+checklist.
+
+By contributing, you agree that your work is licensed under the MIT license.
+
+Security reports go to **animesh.aotr@gmail.com**, not the public issue
+tracker. See [SECURITY.md](SECURITY.md).
+
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE). Contributions are accepted under the same
+license.

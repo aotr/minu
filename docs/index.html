@@ -177,30 +177,31 @@
                 <p class="eyebrow">Runnable gallery</p>
                 <h2>One page for every scenario.</h2>
                 <p>
-                    The repository ships 12 self-contained examples. Clone it and run
-                    <code>npm run examples</code> for the dynamic endpoints. Links below open the source.
+                    The repository ships 12 self-contained examples. Each card opens a separate page;
+                    the dynamic responses are simulated on Pages and real when you run
+                    <code>npm run examples</code> locally.
                 </p>
             </div>
 
             <div class="example-grid">
-                <a href="https://github.com/aotr/minu/tree/main/example/basic"><strong>Basic auto-load</strong><span>fetch on load</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/form"><strong>Form + states</strong><span>POST, loader, disable</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/tabs"><strong>Tabs</strong><span>shared target</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/search"><strong>Search</strong><span>debounce + select</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/polling"><strong>Polling</strong><span>every 2s</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/lazy"><strong>Lazy reveal</strong><span>IntersectionObserver</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/swap"><strong>Swap modes</strong><span>all eight</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/oob"><strong>OOB updates</strong><span>one response, 3 regions</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/headers"><strong>Headers</strong><span>trigger, redirect, refresh</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/events"><strong>Events</strong><span>lifecycle + cancel</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/json"><strong>JSON boundary</strong><span>attributes vs responses</span></a>
-                <a href="https://github.com/aotr/minu/tree/main/example/live"><strong>Live SSE</strong><span>server push</span></a>
+                <a href="example/basic/"><strong>Basic auto-load</strong><span>fetch on load</span></a>
+                <a href="example/form/"><strong>Form + states</strong><span>POST, loader, disable</span></a>
+                <a href="example/tabs/"><strong>Tabs</strong><span>shared target</span></a>
+                <a href="example/search/"><strong>Search</strong><span>debounce + select</span></a>
+                <a href="example/polling/"><strong>Polling</strong><span>every 2s</span></a>
+                <a href="example/lazy/"><strong>Lazy reveal</strong><span>IntersectionObserver</span></a>
+                <a href="example/swap/"><strong>Swap modes</strong><span>all eight</span></a>
+                <a href="example/oob/"><strong>OOB updates</strong><span>one response, 3 regions</span></a>
+                <a href="example/headers/"><strong>Headers</strong><span>trigger, redirect, refresh</span></a>
+                <a href="example/events/"><strong>Events</strong><span>lifecycle + cancel</span></a>
+                <a href="example/json/"><strong>JSON boundary</strong><span>attributes vs responses</span></a>
+                <a href="example/live/"><strong>Live SSE</strong><span>server push</span></a>
             </div>
 
             <p class="footnote">
-                GitHub Pages is static, so the dynamic examples (form, polling, SSE, OOB)
-                run from the repository server, not on this page. The basic and tabs demos
-                above are fully live.
+                Every example above is a separate page. GitHub Pages is static, so the dynamic
+                scenarios (form, polling, SSE, OOB, search, events) use a small browser-side
+                adapter. Run <code>npm run examples</code> for the real Node server.
             </p>
         </section>
 
@@ -234,7 +235,7 @@
             <a href="https://github.com/aotr/minu">GitHub</a>
             <a href="https://www.npmjs.com/package/minu">npm</a>
             <a href="https://github.com/aotr/minu#readme">Docs</a>
-            <a href="https://github.com/aotr/minu/tree/main/example">Examples</a>
+            <a href="example/">Examples</a>
         </div>
     </footer>
 

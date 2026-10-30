@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Added [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+- Added a GitHub Pages project page and per-scenario demo pages.
+- Added a browser-side adapter for the dynamic Pages demos.
+
 ## 1.6.0
 
 - One core with thin UMD/ESM/secure entries; no more duplicated logic.
