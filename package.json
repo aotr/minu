@@ -63,10 +63,11 @@
   ],
   "author": "Animesh Chakraborty",
   "license": "MIT",
+  "homepage": "https://aotr.github.io/minu/",
   "bugs": {
-    "url": "https://github.com/aotr/minu/issues"
+    "url": "https://github.com/aotr/minu/issues",
+    "email": "animesh.aotr@gmail.com"
   },
-  "homepage": "https://github.com/aotr/minu#readme",
   "devDependencies": {
     "jsdom": "^29.1.1",
     "vite-plus": "^1.4.0"
