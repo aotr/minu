@@ -67,6 +67,9 @@ pre code {
 }
 
 .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
     font-family: var(--serif);
     font-size: 1.65rem;
     font-weight: 700;
@@ -75,8 +78,25 @@ pre code {
     line-height: 1;
 }
 
-.brand span {
+.brand img {
+    display: block;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.brand-word i {
     color: var(--violet);
+    font-style: normal;
+}
+
+.footer-brand {
+    font-size: 1.5rem;
+}
+
+.footer-brand img {
+    width: 32px;
+    height: 32px;
 }
 
 .site-header nav {
