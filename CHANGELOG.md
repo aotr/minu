@@ -13,6 +13,8 @@
 - Shared the demo endpoint contract between the Node server and Pages adapter.
 - Added secure-build, demo-contract, and overlapping-request tests.
 - Generated `release.json` and the example gallery from one manifest.
+- Added typed `DocumentEventMap` / `HTMLElementEventMap` / `WindowEventMap`
+  entries so `event.detail` is inferred for Minu events.
 
 ## 1.6.0
 

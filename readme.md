@@ -291,7 +291,7 @@ The build uses **Vite+** (Rolldown) in library mode:
 
 ```bash
 npm run build   # dist/ + gzip budget gate
-npm test        # build + node:test + jsdom
+npm test        # build + type check + node:test + jsdom
 ```
 
 Requires Node 22+ for the build; the shipped files run in modern browsers.

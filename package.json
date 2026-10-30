@@ -30,7 +30,8 @@
   "scripts": {
     "build": "node build.js",
     "dev": "node build.js",
-    "test": "npm run build && node --test \"test/**/*.test.js\"",
+    "test": "npm run build && npm run test:types && node --test \"test/**/*.test.js\"",
+    "test:types": "tsc --noEmit --strict --esModuleInterop --module esnext --moduleResolution bundler --target es2020 --lib es2020,dom test/types.ts",
     "test:only": "node --test \"test/**/*.test.js\"",
     "examples": "node example/server.js",
     "demo:live": "node example/server.js"
@@ -71,6 +72,7 @@
   "devDependencies": {
     "dompurify": "^3.4.17",
     "jsdom": "^29.1.1",
+    "typescript": "^5.9.3",
     "vite-plus": "^1.4.0"
   }
 }

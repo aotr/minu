@@ -32,7 +32,8 @@ npm ci
 npm test
 ```
 
-`npm test` builds the library and runs the `node:test` suite with jsdom.
+`npm test` builds the library, type-checks the public declarations, and runs the
+`node:test` suite with jsdom.
 
 To run the example gallery:
 

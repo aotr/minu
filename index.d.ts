@@ -86,5 +86,11 @@ declare namespace minu {
     function closeStream(element?: Element): void;
 }
 
+declare global {
+    interface DocumentEventMap extends minu.MinuEventMap {}
+    interface HTMLElementEventMap extends minu.MinuEventMap {}
+    interface WindowEventMap extends minu.MinuEventMap {}
+}
+
 export = minu;
 export as namespace minu;
