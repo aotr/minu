@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Lazy Reveal</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Lazy reveal</h1>
+    <p class="lede">
+        This fragment is not requested on page load. Scroll down until the dashed placeholder
+        enters the viewport; <code>revealed</code> then fetches it once.
+    </p>
+
+    <div class="card">
+        <div class="spacer">Scroll down ↓</div>
+
+        <div minu-get="/demo/lazy"
+             minu-trigger="revealed"
+             minu-target="#lazy-content">
+            <div class="loader" minu-loader>Loading section…</div>
+            <div id="lazy-content" class="result">
+                <p class="muted">Placeholder — not loaded yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li><code>revealed</code> creates an <code>IntersectionObserver</code> and watches the trigger element.</li>
+        <li>When the element intersects the viewport, Minu sends the request and disconnects the observer.</li>
+        <li>The returned HTML replaces the contents of <code>#lazy-content</code>.</li>
+        <li><code>intersect</code> works the same way but stays connected and requests on every entry.</li>
+        <li>Browsers without <code>IntersectionObserver</code> fall back to loading immediately.</li>
+    </ol>
+
+    <pre><code>&lt;div minu-get="/demo/lazy"
+     minu-trigger="revealed"
+     minu-target="#lazy-content"&gt;
+    &lt;div id="lazy-content"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    <p class="muted">
+        Use <code>revealed</code> for below-the-fold sections and images.
+        Use <code>intersect</code> when content should refresh every time it becomes visible.
+    </p>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>minu.init();</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Search + Debounce</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Search + debounce</h1>
+    <p class="lede">
+        Type in the box. Minu waits 300 ms after the last keystroke, sends the value as a GET
+        parameter, and extracts only <code>#search-results</code> from the full HTML response.
+    </p>
+
+    <div class="card">
+        <div class="field">
+            <label for="q">Search the menu</label>
+            <input type="search" id="q" name="q" placeholder="coffee, tea, bakery…"
+                   minu-get="/demo/search"
+                   minu-trigger="keyup changed delay:300ms"
+                   minu-target="#search-panel"
+                   minu-select="#search-results"
+                   minu-indicator="#search-spinner">
+        </div>
+        <span class="spinner" id="search-spinner">Searching…</span>
+        <div id="search-panel" class="result">
+            <p class="muted">Results appear here after you type.</p>
+        </div>
+    </div>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li><code>keyup</code> is the base event.</li>
+        <li><code>changed</code> skips repeats where the value did not change.</li>
+        <li><code>delay:300ms</code> debounces the request until typing pauses.</li>
+        <li>The input is the trigger, so its <code>name=q</code> value is sent as <code>?q=…</code>.</li>
+        <li>The server returns a complete HTML document. <code>minu-select="#search-results"</code>
+            extracts just that fragment before swapping into <code>#search-panel</code>.</li>
+    </ol>
+
+    <pre><code>&lt;input name="q"
+       minu-get="/demo/search"
+       minu-trigger="keyup changed delay:300ms"
+       minu-target="#search-panel"
+       minu-select="#search-results"&gt;
+
+&lt;div id="search-panel"&gt;&lt;/div&gt;</code></pre>
+
+    <p class="muted">
+        Try clearing the field. The empty value is sent too, so the server returns the full menu.
+    </p>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>minu.init();</script>
+</body>
+</html>

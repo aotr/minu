@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — JSON Support</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>JSON: what works</h1>
+    <p class="lede">
+        Minu is an HTML-fragment loader. JSON is supported for <em>attribute configuration</em>,
+        not as a request body or response format. This page shows both sides clearly.
+    </p>
+
+    <div class="card">
+        <h2>1. JSON in attributes (works)</h2>
+        <p>
+            <code>minu-vals</code> and <code>minu-headers</code> are JSON objects. Minu parses
+            them before the request; nested values are stringified into form fields.
+        </p>
+        <button class="btn"
+                minu-post="/demo/json-input"
+                minu-trigger="click"
+                minu-target="#json-result"
+                minu-vals='{"source":"minu-vals","nested":{"level":2}}'
+                minu-headers='{"X-Demo-Token":"json-header"}'>
+            Send JSON-configured request
+        </button>
+        <div id="json-result" class="result" style="margin-top: 1rem;">
+            <p class="muted">The echoed values appear here.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>2. Raw JSON response (not parsed)</h2>
+        <p>
+            A response with <code>Content-Type: application/json</code> is still treated as
+            text. Minu swaps the raw JSON string into the target; it does not render fields.
+        </p>
+        <button class="btn secondary"
+                minu-get="/demo/json-response"
+                minu-trigger="click"
+                minu-target="#raw-json">
+            Fetch a JSON response
+        </button>
+        <div id="raw-json" class="result" style="margin-top: 1rem;">
+            <p class="muted">Raw body appears here.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>3. Custom fetch + JSON renderer (workaround)</h2>
+        <p>
+            When the endpoint is JSON-only, use native <code>fetch</code> and render the HTML
+            yourself. Minu is not involved in this request.
+        </p>
+        <button class="btn" id="json-fetch">Fetch and parse JSON</button>
+        <div id="json-rendered" class="result" style="margin-top: 1rem;">
+            <p class="muted">Parsed items appear here.</p>
+        </div>
+    </div>
+
+    <h2>Support matrix</h2>
+    <table class="table">
+        <tr><th>Thing</th><th>Supported?</th><th>Notes</th></tr>
+        <tr><td><code>minu-vals</code> JSON object</td><td>✅</td><td>Merged into request values.</td></tr>
+        <tr><td><code>minu-headers</code> JSON object</td><td>✅</td><td>Merged into request headers.</td></tr>
+        <tr><td>JSON request body</td><td>❌</td><td>Bodies are form-urlencoded or multipart.</td></tr>
+        <tr><td>JSON response rendering</td><td>❌</td><td>Responses are HTML fragments.</td></tr>
+        <tr><td>Server-side JSON → HTML</td><td>✅</td><td>Render the fragment, then let Minu swap it.</td></tr>
+        <tr><td>Client-side <code>fetch()</code> + JSON</td><td>✅</td><td>Use your own renderer; bypass Minu.</td></tr>
+    </table>
+
+    <h2>Why responses must be HTML</h2>
+    <ol class="steps">
+        <li>Minu calls <code>response.text()</code>; there is no JSON parser in the runtime.</li>
+        <li>The text goes through the sanitizer and then into a swap target.</li>
+        <li>That is the whole contract: HTML in, HTML out. It keeps the library small and predictable.</li>
+        <li>For a JSON API, render HTML on the server (or use <code>fetch</code> and your own renderer).</li>
+    </ol>
+
+    <pre><code>// works: JSON config in attributes
+&lt;button minu-post="/save"
+        minu-vals='{"source":"demo","nested":{"level":2}}'
+        minu-headers='{"X-Demo-Token":"abc"}'&gt;
+    Save
+&lt;/button&gt;
+
+// does not work: JSON body / JSON response
+// Minu sends form fields and expects an HTML fragment.</code></pre>
+
+    <p class="muted">
+        If Minu needs to consume a JSON API directly, add a server-side adapter or ask for a
+        separate JSON mode — it is intentionally not part of the core build.
+    </p>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>
+        document.getElementById('json-fetch').addEventListener('click', async () => {
+            const target = document.getElementById('json-rendered');
+            try {
+                const response = await fetch('/demo/json-response');
+                const data = await response.json();
+                target.innerHTML = '<strong>Parsed JSON</strong><ul class="result-list">' +
+                    data.items.map((item) => '<li>Item ' + item + '</li>').join('') +
+                    '</ul>';
+            } catch (error) {
+                target.innerHTML = '<div class="error-msg">' + error.message + '</div>';
+            }
+        });
+        minu.init();
+    </script>
+</body>
+</html>

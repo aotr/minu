@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — HTML fragments, not a framework</title>
+    <meta name="description" content="Minu is a tiny, dependency-free HTML fragment loader for server-rendered apps. Forms, polling, OOB updates, and SSE without a SPA.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>◈</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="./" aria-label="Minu home">minu<span>.</span></a>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#examples">Examples</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a class="nav-cta" href="https://www.npmjs.com/package/minu">npm ↗</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">v1.6.0 · 3.8 KB gzip · zero runtime deps</p>
+                <h1>HTML fragments,<br><em>not a framework.</em></h1>
+                <p class="lede">
+                    Minu fetches server-rendered HTML and puts it where it belongs.
+                    Forms, polling, out-of-band updates, and SSE — without a SPA,
+                    a router, or a build step.
+                </p>
+                <div class="actions">
+                    <a class="button" href="#quickstart">Get started</a>
+                    <a class="button ghost" href="https://github.com/aotr/minu">View source</a>
+                </div>
+                <div class="install">
+                    <code>npm install minu</code>
+                    <button type="button" data-copy="npm install minu">Copy</button>
+                </div>
+            </div>
+
+            <div class="demo-card" aria-label="Live Minu example">
+                <div class="demo-bar">
+                    <span class="dots"><i></i><i></i><i></i></span>
+                    <span>live demo</span>
+                </div>
+                <div class="demo-body">
+                    <p class="demo-label">Auto-loaded fragment</p>
+                    <div minu-get="demo-price.html" minu-trigger="load" minu-target="#price-demo">
+                        <div id="price-demo" class="demo-loading">Loading fragment…</div>
+                    </div>
+                    <p class="demo-note">
+                        This card was fetched from <code>demo-price.html</code> by Minu.
+                        It is not hard-coded into this page.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="strip" aria-label="Project facts">
+            <div><strong>0</strong><span>runtime dependencies</span></div>
+            <div><strong>3.8 KB</strong><span>minified + gzipped</span></div>
+            <div><strong>14</strong><span>tests passing</span></div>
+            <div><strong>1</strong><span>small core</span></div>
+        </section>
+
+        <section id="quickstart" class="section">
+            <div class="section-head">
+                <p class="eyebrow">Quick start</p>
+                <h2>Three attributes and a script tag.</h2>
+                <p>No bundler required. Load the UMD build from npm/unpkg, or import the ESM build from a bundler.</p>
+            </div>
+
+            <div class="quick-grid">
+                <pre><code>&lt;script src="https://unpkg.com/minu@1.6.0/dist/minu.min.js"&gt;&lt;/script&gt;
+
+&lt;div minu-get="/widgets/price"
+     minu-trigger="load"
+     minu-target="#price"&gt;
+    &lt;div minu-content&gt;Loading…&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="price"&gt;&lt;/div&gt;
+
+&lt;script&gt;minu.init();&lt;/script&gt;</code></pre>
+
+                <div class="quick-notes">
+                    <div class="note">
+                        <span class="note-num">01</span>
+                        <div>
+                            <strong>Server keeps rendering HTML.</strong>
+                            <p>Minu swaps the response into the target. No JSON schema, no client templates.</p>
+                        </div>
+                    </div>
+                    <div class="note">
+                        <span class="note-num">02</span>
+                        <div>
+                            <strong>One attribute drives the request.</strong>
+                            <p><code>minu-get</code>, <code>minu-post</code>, and the other verbs. Forms serialize automatically.</p>
+                        </div>
+                    </div>
+                    <div class="note">
+                        <span class="note-num">03</span>
+                        <div>
+                            <strong>Events are normal DOM events.</strong>
+                            <p>Listen with <code>addEventListener</code>. Everything bubbles and is cancelable where it matters.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <div class="section-head">
+                <p class="eyebrow">What is inside</p>
+                <h2>Small surface. Real applications.</h2>
+            </div>
+
+            <div class="feature-grid">
+                <article class="feature">
+                    <span class="glyph">↯</span>
+                    <h3>Every HTTP verb</h3>
+                    <p>GET, POST, PUT, PATCH, DELETE. Forms, files, headers, values, timeout, and credentials.</p>
+                </article>
+                <article class="feature">
+                    <span class="glyph">◷</span>
+                    <h3>Trigger grammar</h3>
+                    <p><code>every 5s</code>, <code>revealed</code>, <code>intersect</code>, <code>once</code>, <code>changed</code>, debounce, throttle, and <code>from:</code>.</p>
+                </article>
+                <article class="feature">
+                    <span class="glyph">⇄</span>
+                    <h3>Eight swap modes</h3>
+                    <p><code>innerHTML</code>, <code>outerHTML</code>, before/after positions, <code>delete</code>, and <code>none</code>.</p>
+                </article>
+                <article class="feature">
+                    <span class="glyph">◈</span>
+                    <h3>One response, many regions</h3>
+                    <p><code>minu-oob</code> updates carts, toasts, and counters from a single HTML payload.</p>
+                </article>
+                <article class="feature">
+                    <span class="glyph">≈</span>
+                    <h3>Live SSE content</h3>
+                    <p>Native <code>EventSource</code> with reconnect, named events, OOB updates, and one-connection fan-out.</p>
+                </article>
+                <article class="feature">
+                    <span class="glyph">⌁</span>
+                    <h3>Server protocol</h3>
+                    <p><code>Minu-Trigger</code>, <code>Minu-Redirect</code>, and <code>Minu-Refresh</code> let the server steer the client.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section split-section">
+            <div class="section-head">
+                <p class="eyebrow">Try it here</p>
+                <h2>Click a tab. Watch the fragment load.</h2>
+                <p>
+                    This is a real Minu instance on this page, fetching static fragments from
+                    this GitHub Pages site. The same code runs against dynamic endpoints locally.
+                </p>
+            </div>
+
+            <div class="tabs-demo">
+                <div class="tab-nav">
+                    <button type="button" class="tab-btn active" minu-get="demo-tab1.html" minu-trigger="click" minu-target="#tab-demo">Triggers</button>
+                    <button type="button" class="tab-btn" minu-get="demo-tab2.html" minu-trigger="click" minu-target="#tab-demo">Swaps</button>
+                    <button type="button" class="tab-btn" minu-get="demo-tab3.html" minu-trigger="click" minu-target="#tab-demo">SSE</button>
+                </div>
+                <div id="tab-demo" class="tab-panel">
+                    <p>Pick a tab to fetch its fragment.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples" class="section">
+            <div class="section-head">
+                <p class="eyebrow">Runnable gallery</p>
+                <h2>One page for every scenario.</h2>
+                <p>
+                    The repository ships 12 self-contained examples. Clone it and run
+                    <code>npm run examples</code> for the dynamic endpoints. Links below open the source.
+                </p>
+            </div>
+
+            <div class="example-grid">
+                <a href="https://github.com/aotr/minu/tree/main/example/basic"><strong>Basic auto-load</strong><span>fetch on load</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/form"><strong>Form + states</strong><span>POST, loader, disable</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/tabs"><strong>Tabs</strong><span>shared target</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/search"><strong>Search</strong><span>debounce + select</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/polling"><strong>Polling</strong><span>every 2s</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/lazy"><strong>Lazy reveal</strong><span>IntersectionObserver</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/swap"><strong>Swap modes</strong><span>all eight</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/oob"><strong>OOB updates</strong><span>one response, 3 regions</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/headers"><strong>Headers</strong><span>trigger, redirect, refresh</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/events"><strong>Events</strong><span>lifecycle + cancel</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/json"><strong>JSON boundary</strong><span>attributes vs responses</span></a>
+                <a href="https://github.com/aotr/minu/tree/main/example/live"><strong>Live SSE</strong><span>server push</span></a>
+            </div>
+
+            <p class="footnote">
+                GitHub Pages is static, so the dynamic examples (form, polling, SSE, OOB)
+                run from the repository server, not on this page. The basic and tabs demos
+                above are fully live.
+            </p>
+        </section>
+
+        <section class="section compare">
+            <div class="section-head">
+                <p class="eyebrow">Positioning</p>
+                <h2>A deliberate small tool.</h2>
+            </div>
+            <div class="compare-grid">
+                <p>
+                    Minu is for Rails, Django, Laravel, PHP, and Express apps that already
+                    render HTML. It is not a router, a state manager, or a template language.
+                    It is the smallest useful bridge between a server-rendered page and a
+                    fragment request.
+                </p>
+                <ul>
+                    <li>Bring htmx-style attributes; skip the extension system.</li>
+                    <li>Bring Turbo-style live updates; skip the SPA frame model.</li>
+                    <li>Bring Unpoly-style server protocol; skip the history layer.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>
+            <a class="brand" href="./">minu<span>.</span></a>
+            <p>MIT · built for server-rendered apps.</p>
+        </div>
+        <div class="footer-links">
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a href="https://www.npmjs.com/package/minu">npm</a>
+            <a href="https://github.com/aotr/minu#readme">Docs</a>
+            <a href="https://github.com/aotr/minu/tree/main/example">Examples</a>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/minu@1.6.0/dist/minu.min.js"></script>
+    <script>
+        document.querySelectorAll('[data-copy]').forEach((button) => {
+            button.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(button.dataset.copy);
+                    button.textContent = 'Copied';
+                    setTimeout(() => { button.textContent = 'Copy'; }, 1400);
+                } catch (error) {
+                    button.textContent = 'Copy failed';
+                }
+            });
+        });
+
+        document.querySelectorAll('.tab-btn').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach((tab) => tab.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+
+        minu.init();
+    </script>
+</body>
+</html>

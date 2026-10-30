@@ -3,47 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minu — Form Example</title>
+    <title>Minu — Form + Request States</title>
     <link rel="stylesheet" href="../shared/style.css">
 </head>
 <body>
-    <h1>Form Example</h1>
-    <p>Submit the form. Minu fetches the server response and shows it — no page reload.</p>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Form + request states</h1>
+    <p class="lede">
+        Submitting posts the form fields to <code>/demo/form</code>. While the request is in
+        flight, the button is disabled, an indicator is visible, and the shared loader is shown.
+    </p>
 
     <div class="card">
-        <form id="contact-form" minu-get="response.html" minu-trigger="submit">
-            <div class="form-group">
+        <form minu-post="/demo/form"
+              minu-trigger="submit"
+              minu-confirm="Send this message to the demo server?"
+              minu-target="#form-result"
+              minu-disable="#send"
+              minu-indicator="#send-spinner"
+              minu-timeout="5000">
+            <div class="field">
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Your name" required>
+                <input type="text" id="name" name="name" placeholder="Ada Lovelace" required>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                <input type="email" id="email" name="email" placeholder="ada@example.com" required>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label for="message">Message</label>
-                <textarea id="message" name="message" placeholder="Write something..." required></textarea>
+                <textarea id="message" name="message" placeholder="Write something…" required></textarea>
             </div>
-            <button type="submit" class="btn">Send Message</button>
+            <div class="demo-row">
+                <button type="submit" class="btn" id="send">Send message</button>
+                <span class="spinner" id="send-spinner">Sending…</span>
+                <span class="loader" minu-loader style="padding: 0;">Working…</span>
+            </div>
         </form>
 
-        <div class="loader" minu-loader>Sending...</div>
-        <div minu-content></div>
+        <div id="form-result"></div>
     </div>
 
     <h2>How it works</h2>
-    <pre><code>&lt;form minu-get="response.html" minu-trigger="submit"&gt;
-  &lt;!-- form fields --&gt;
-  &lt;button type="submit"&gt;Send&lt;/button&gt;
+    <ol class="steps">
+        <li>The submit event is handled by Minu, so the browser does not navigate.</li>
+        <li><code>minu-post</code> serializes the form into an <code>application/x-www-form-urlencoded</code> body.</li>
+        <li><code>minu-confirm</code> asks first; cancelling sends nothing.</li>
+        <li><code>minu-disable</code> disables the send button; <code>minu-indicator</code> adds the
+            <code>minu-requesting</code> class to the spinner.</li>
+        <li>The server parses the POST and returns an HTML success card, swapped into <code>#form-result</code>.</li>
+        <li>On success, error, timeout, or abort, the button and indicator are restored.</li>
+    </ol>
+
+    <pre><code>&lt;form minu-post="/demo/form"
+      minu-trigger="submit"
+      minu-confirm="Send this message?"
+      minu-target="#form-result"
+      minu-disable="#send"
+      minu-indicator="#send-spinner"
+      minu-timeout="5000"&gt;
+    &lt;input name="name"&gt;
+    &lt;button type="submit" id="send"&gt;Send&lt;/button&gt;
 &lt;/form&gt;
-&lt;div class="loader" minu-loader&gt;Sending...&lt;/div&gt;
-&lt;div minu-content&gt;&lt;/div&gt;</code></pre>
+&lt;span class="spinner" id="send-spinner"&gt;Sending…&lt;/span&gt;
+&lt;div id="form-result"&gt;&lt;/div&gt;</code></pre>
+
+    <p class="muted">
+        Files produce <code>multipart/form-data</code> automatically. GET forms append their
+        fields to the query string instead of sending a body.
+    </p>
 
     <script src="../../dist/minu.min.js"></script>
     <script>
-        // Prevent default form submission, let Minu handle it
-        document.getElementById('contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
+        document.addEventListener('minu:contentError', (event) => {
+            document.getElementById('form-result').innerHTML =
+                '<div class="error-msg">Request failed: ' + event.detail.error.message + '</div>';
         });
         minu.init();
     </script>

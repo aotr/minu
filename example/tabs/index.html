@@ -3,40 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minu — Tabs Example</title>
+    <title>Minu — Tabs + Shared Target</title>
     <link rel="stylesheet" href="../shared/style.css">
 </head>
 <body>
-    <h1>Tabs Example</h1>
-    <p>Click a tab to load its content. Each tab loads a different HTML fragment.</p>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Tabs + shared target</h1>
+    <p class="lede">
+        Three triggers, one content area. None of the tab buttons contains a target; Minu
+        falls back to the single <code>[minu-content]</code> on the page.
+    </p>
 
     <div class="card">
         <div class="tab-nav">
-            <span minu-get="tab1.html" minu-trigger="click" class="tab-btn active" onclick="activateTab(this)">Tab 1</span>
-            <span minu-get="tab2.html" minu-trigger="click" class="tab-btn" onclick="activateTab(this)">Tab 2</span>
-            <span minu-get="tab3.html" minu-trigger="click" class="tab-btn" onclick="activateTab(this)">Tab 3</span>
+            <button type="button" class="tab-btn active" minu-get="tab1.html" minu-trigger="click">Tab 1</button>
+            <button type="button" class="tab-btn" minu-get="tab2.html" minu-trigger="click">Tab 2</button>
+            <button type="button" class="tab-btn" minu-get="tab3.html" minu-trigger="click">Tab 3</button>
         </div>
 
-        <div class="loader" minu-loader>Loading tab...</div>
+        <div class="loader" minu-loader>Loading tab…</div>
         <div minu-content>
-            <p style="color: #888;">Click a tab above to load content.</p>
+            <p class="muted">Click a tab above to load content.</p>
         </div>
     </div>
 
     <h2>How it works</h2>
-    <pre><code>&lt;span minu-get="tab1.html" minu-trigger="click"&gt;
-  Tab 1
-&lt;/span&gt;
+    <ol class="steps">
+        <li>Each tab is a normal click trigger with its own <code>minu-get</code> URL.</li>
+        <li>No tab has a <code>minu-target</code> or inner <code>[minu-content]</code>.</li>
+        <li>Minu finds the one shared <code>[minu-content]</code> in the card and swaps there.</li>
+        <li>The shared loader is also found once, so it does not replace the tab label.</li>
+        <li>Clicking quickly aborts the previous request; only the latest response wins.</li>
+    </ol>
 
-&lt;div class="loader" minu-loader&gt;Loading...&lt;/div&gt;
+    <pre><code>&lt;button minu-get="tab1.html" minu-trigger="click"&gt;Tab 1&lt;/button&gt;
+&lt;button minu-get="tab2.html" minu-trigger="click"&gt;Tab 2&lt;/button&gt;
+
+&lt;div class="loader" minu-loader&gt;Loading…&lt;/div&gt;
 &lt;div minu-content&gt;&lt;/div&gt;</code></pre>
+
+    <p class="muted">
+        The active-tab styling is separate page JavaScript. Minu only handles the request and swap.
+    </p>
 
     <script src="../../dist/minu.min.js"></script>
     <script>
-        function activateTab(el) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            el.classList.add('active');
-        }
+        document.querySelectorAll('.tab-btn').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach((tab) => tab.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
         minu.init();
     </script>
 </body>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Events + Cancellation</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Events + cancellation</h1>
+    <p class="lede">
+        Every request emits a small lifecycle. Events bubble, so one document listener can
+        log them. <code>minu:beforeRequest</code> is cancelable.
+    </p>
+
+    <div class="card">
+        <div class="demo-row">
+            <button class="btn" id="event-btn" minu-get="/demo/time" minu-trigger="click" minu-target="#event-result">
+                Run request
+            </button>
+            <label class="checkline">
+                <input type="checkbox" id="cancel-next">
+                Cancel the next request
+            </label>
+            <button class="btn secondary" id="timeout-btn" minu-get="/demo/slow" minu-trigger="click"
+                    minu-target="#timeout-result" minu-timeout="500">
+                Timeout after 500 ms
+            </button>
+        </div>
+
+        <div id="event-result" class="result">
+            <p class="muted">The response from <code>/demo/time</code> appears here.</p>
+        </div>
+        <div id="timeout-result"></div>
+        <div id="event-log" class="log" style="margin-top: 1rem;"><div>Event log ready.</div></div>
+    </div>
+
+    <h2>Lifecycle</h2>
+    <table class="table">
+        <tr><th>Event</th><th>When</th><th>Detail</th></tr>
+        <tr><td><code>minu:contentSetup</code></td><td>Element initialized</td><td><code>{ url, trigger }</code></td></tr>
+        <tr><td><code>minu:beforeRequest</code></td><td>Before fetch; cancelable</td><td><code>{ url, method, element }</code></td></tr>
+        <tr><td><code>minu:contentLoaded</code></td><td>HTML parsed and swapped</td><td><code>{ html, url, method }</code></td></tr>
+        <tr><td><code>minu:contentError</code></td><td>Network, HTTP, timeout</td><td><code>{ error, url }</code></td></tr>
+        <tr><td><code>minu:afterRequest</code></td><td>Always, after cleanup</td><td><code>{ url, method, ok }</code></td></tr>
+    </table>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li>The document listener receives all events because Minu dispatches them with <code>bubbles: true</code>.</li>
+        <li>Tick “Cancel the next request”, then click “Run request”: the
+            <code>beforeRequest</code> listener calls <code>event.preventDefault()</code>.</li>
+        <li>A cancelled request never calls <code>fetch</code> and fires no <code>afterRequest</code>.</li>
+        <li>The timeout button aborts after 500 ms; the demo endpoint answers after 1.5 s.</li>
+        <li>Timeout and failure both fire <code>contentError</code>, then <code>afterRequest</code> with <code>ok: false</code>.</li>
+    </ol>
+
+    <pre><code>document.addEventListener('minu:beforeRequest', (event) => {
+    if (shouldCancel) event.preventDefault();
+});
+
+document.addEventListener('minu:contentLoaded', (event) => {
+    console.log('loaded', event.detail.url);
+});
+
+document.addEventListener('minu:contentError', (event) => {
+    console.warn('failed', event.detail.error);
+});</code></pre>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>
+        const log = document.getElementById('event-log');
+        const cancel = document.getElementById('cancel-next');
+        const write = (message) => {
+            const line = document.createElement('div');
+            line.textContent = new Date().toLocaleTimeString() + ' · ' + message;
+            log.prepend(line);
+        };
+
+        document.addEventListener('minu:contentSetup', (event) => {
+            write('contentSetup · ' + event.detail.trigger + ' · ' + event.detail.url);
+        });
+        document.addEventListener('minu:beforeRequest', (event) => {
+            write('beforeRequest · ' + event.detail.method + ' ' + event.detail.url);
+            if (cancel.checked && event.detail.element.id === 'event-btn') {
+                cancel.checked = false;
+                event.preventDefault();
+                write('cancelled by beforeRequest');
+            }
+        });
+        document.addEventListener('minu:contentLoaded', (event) => {
+            write('contentLoaded · ' + event.detail.url);
+        });
+        document.addEventListener('minu:contentError', (event) => {
+            write('contentError · ' + event.detail.error.message);
+        });
+        document.addEventListener('minu:afterRequest', (event) => {
+            write('afterRequest · ok=' + event.detail.ok + ' · ' + event.detail.url);
+        });
+
+        minu.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Polling</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Polling</h1>
+    <p class="lede">
+        The panel refreshes from <code>/demo/time</code> every 2 seconds. Switch browser tabs
+        for a few seconds — polling pauses while the document is hidden, then resumes.
+    </p>
+
+    <div class="card">
+        <div class="demo-row">
+            <span class="tag">every 2s</span>
+            <span class="spinner" id="poll-dot">Fetching…</span>
+        </div>
+        <div minu-get="/demo/time"
+             minu-trigger="every 2s"
+             minu-target="#poll-panel"
+             minu-indicator="#poll-dot">
+            <div id="poll-panel" class="result">
+                <p class="muted">Waiting for the first poll…</p>
+            </div>
+        </div>
+    </div>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li><code>every 2s</code> creates one interval when the element is initialized.</li>
+        <li>On each tick, Minu calls the same request pipeline used by clicks and loads.</li>
+        <li>The response replaces the contents of <code>#poll-panel</code>.</li>
+        <li>If <code>document.hidden</code> is true, that tick is skipped instead of queued.</li>
+        <li><code>minu.destroy()</code> clears the interval and aborts any request in flight.</li>
+    </ol>
+
+    <pre><code>&lt;div minu-get="/demo/time"
+     minu-trigger="every 2s"
+     minu-target="#poll-panel"&gt;
+    &lt;div id="poll-panel"&gt;Waiting…&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    <p class="muted">
+        Polling is one request per tick. For high-frequency data, use SSE from the
+        <a href="../live/">live example</a> instead.
+    </p>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>minu.init();</script>
+</body>
+</html>

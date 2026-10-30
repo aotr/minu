@@ -10,6 +10,22 @@ body {
     color: #333;
     padding: 2rem;
     line-height: 1.6;
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+a {
+    color: #5a52d5;
+}
+
+.crumb {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.lede {
+    color: #555;
+    max-width: 68ch;
 }
 
 h1 {
@@ -168,4 +184,253 @@ pre code {
     padding: 1rem;
     border-radius: 8px;
     border: 1px solid #f5c6cb;
+}
+
+.muted {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #efeefe;
+    color: #5a52d5;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.result {
+    padding: 1rem;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.result strong {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.result-list {
+    margin: 0.75rem 0 0;
+    padding-left: 1.2rem;
+}
+
+.result-list dt {
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.result-list dd {
+    margin-left: 0;
+    color: #555;
+}
+
+ol.steps {
+    padding-left: 1.3rem;
+    color: #555;
+}
+
+ol.steps li {
+    margin-bottom: 0.35rem;
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.example-card {
+    display: block;
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.example-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.example-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.35rem;
+}
+
+.example-card p {
+    margin: 0;
+    font-size: 0.92rem;
+}
+
+.demo-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.btn.secondary {
+    background: #e8e8e8;
+    color: #333;
+}
+
+.btn.secondary:hover {
+    background: #dcdcdc;
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.spinner {
+    display: none;
+    color: #5a52d5;
+    font-size: 0.9rem;
+}
+
+.spinner.minu-requesting {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.log {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 8px;
+    padding: 0.9rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.82rem;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.log div {
+    padding: 1px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.swap-zone {
+    min-height: 120px;
+    border: 2px dashed #d8d8e8;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #fbfbfe;
+}
+
+.swap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1rem;
+}
+
+.swap-col {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+}
+
+.swap-col .btn {
+    width: 100%;
+}
+
+.swap-item {
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: #efeefe;
+    border: 1px solid #d8d5ff;
+}
+
+#toasts {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.toast {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.cart {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    background: #efeefe;
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem;
+    font-weight: 600;
+}
+
+.field {
+    margin-bottom: 1rem;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.field input,
+.field textarea,
+.field select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.checkline {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    color: #555;
+    font-size: 0.92rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.table th,
+.table td {
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    padding: 0.45rem 0.3rem;
+}
+
+.table th {
+    color: #555;
+}
+
+.spacer {
+    height: 70vh;
+    display: grid;
+    place-items: center;
+    color: #888;
+    border: 2px dashed #ddd;
+    border-radius: 12px;
+    margin: 1rem 0;
 }

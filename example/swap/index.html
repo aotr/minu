@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Swap Modes</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Swap modes</h1>
+    <p class="lede">
+        Every button fetches the same HTML fragment. Only <code>minu-swap</code> changes where
+        the fragment lands relative to its target.
+    </p>
+
+    <div class="card">
+        <div class="swap-grid">
+            <div class="swap-col">
+                <button class="btn" minu-get="/demo/fragment" minu-trigger="click" minu-target="#swap-inner">innerHTML</button>
+                <div class="swap-zone" id="swap-inner"><strong>Target</strong><p class="muted">Replace children.</p></div>
+            </div>
+            <div class="swap-col">
+                <button class="btn" minu-get="/demo/fragment" minu-trigger="click" minu-target="#swap-outer" minu-swap="outerHTML">outerHTML</button>
+                <div class="swap-zone" id="swap-outer"><strong>Target</strong><p class="muted">Replace this box.</p></div>
+            </div>
+            <div class="swap-col">
+                <button class="btn" minu-get="/demo/fragment" minu-trigger="click" minu-target="#swap-beforebegin" minu-swap="beforebegin">beforebegin</button>
+                <div class="swap-zone" id="swap-beforebegin"><strong>Target</strong><p class="muted">Insert before.</p></div>
+            </div>
+            <div class="swap-col">
+                <button class="btn" minu-get="/demo/fragment" minu-trigger="click" minu-target="#swap-afterbegin" minu-swap="afterbegin">afterbegin</button>
+                <div class="swap-zone" id="swap-afterbegin"><strong>Target</strong><p class="muted">Insert first child.</p></div>
+            </div>
+            <div class="swap-col">
+                <button class="btn" minu-get="/demo/fragment" minu-trigger="click" minu-target="#swap-beforeend" minu-swap="beforeend">beforeend</button>
+                <div class="swap-zone" id="swap-beforeend"><strong>Target</strong><p class="muted">Append as last child.</p></div>
+            </div>
+            <div class="swap-col">
+                <button class="btn" minu-get="/demo/fragment" minu-trigger="click" minu-target="#swap-afterend" minu-swap="afterend">afterend</button>
+                <div class="swap-zone" id="swap-afterend"><strong>Target</strong><p class="muted">Insert after.</p></div>
+            </div>
+            <div class="swap-col">
+                <button class="btn secondary" minu-get="/demo/fragment" minu-trigger="click" minu-target="#swap-delete" minu-swap="delete">delete</button>
+                <div class="swap-zone" id="swap-delete"><strong>Target</strong><p class="muted">Remove this box.</p></div>
+            </div>
+            <div class="swap-col">
+                <button class="btn secondary" minu-get="/demo/fragment" minu-trigger="click" minu-target="#swap-none" minu-swap="none">none</button>
+                <div class="swap-zone" id="swap-none"><strong>Target</strong><p class="muted">Fetch, but do not swap.</p></div>
+            </div>
+        </div>
+
+        <div class="demo-row">
+            <a class="btn secondary" href="./">Reset all boxes</a>
+            <span id="swap-log" class="muted">Last event: —</span>
+        </div>
+    </div>
+
+    <h2>What each mode does</h2>
+    <table class="table">
+        <tr><th>Mode</th><th>Result</th></tr>
+        <tr><td><code>innerHTML</code> (default)</td><td>Replace the target’s children.</td></tr>
+        <tr><td><code>outerHTML</code></td><td>Replace the target itself.</td></tr>
+        <tr><td><code>beforebegin</code></td><td>Insert before the target.</td></tr>
+        <tr><td><code>afterbegin</code></td><td>Insert as the target’s first child.</td></tr>
+        <tr><td><code>beforeend</code></td><td>Insert as the target’s last child.</td></tr>
+        <tr><td><code>afterend</code></td><td>Insert after the target.</td></tr>
+        <tr><td><code>delete</code></td><td>Remove the target, ignore the response body.</td></tr>
+        <tr><td><code>none</code></td><td>Fetch but do not swap; useful for side effects/events.</td></tr>
+    </table>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li>Minu resolves the button’s target before the request.</li>
+        <li>The response is sanitized, then <code>swap()</code> applies the requested mode.</li>
+        <li><code>delete</code> and <code>none</code> still fire the normal request and content events.</li>
+        <li><code>outerHTML</code> and <code>delete</code> remove their target; reload to reset those boxes.</li>
+    </ol>
+
+    <pre><code>&lt;button minu-get="/demo/fragment"
+        minu-trigger="click"
+        minu-target="#swap"
+        minu-swap="beforeend"&gt;
+    Append
+&lt;/button&gt;
+
+&lt;div id="swap"&gt;…&lt;/div&gt;</code></pre>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>
+        document.addEventListener('minu:contentLoaded', (event) => {
+            document.getElementById('swap-log').textContent =
+                'Last event: loaded ' + event.detail.url + ' (' + event.detail.method + ')';
+        });
+        minu.init();
+    </script>
+</body>
+</html>

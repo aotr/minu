@@ -1,18 +1,18 @@
 {
   "name": "minu",
-  "version": "1.1.0",
-  "description": "Lightweight HTML fragment loader — fetch and inject content with zero dependencies",
+  "version": "1.6.0",
+  "description": "Lightweight HTML fragment loader — AJAX, polling, and live SSE content with zero dependencies",
   "main": "dist/minu.min.js",
-  "module": "dist/minu.esm.js",
+  "module": "dist/minu.esm.mjs",
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./dist/minu.esm.js",
+      "import": "./dist/minu.esm.mjs",
       "require": "./dist/minu.min.js"
     },
     "./secure": {
       "types": "./index.d.ts",
-      "import": "./dist/minu.secure.esm.js",
+      "import": "./dist/minu.secure.esm.mjs",
       "require": "./dist/minu.secure.min.js"
     }
   },
@@ -20,14 +20,21 @@
     "dist/",
     "index.d.ts",
     "readme.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "types": "index.d.ts",
   "sideEffects": false,
   "scripts": {
     "build": "node build.js",
-    "dev": "node build.js --watch",
-    "examples": "npx serve ."
+    "dev": "node build.js",
+    "test": "npm run build && node --test \"test/**/*.test.js\"",
+    "test:only": "node --test \"test/**/*.test.js\"",
+    "examples": "node example/server.js",
+    "demo:live": "node example/server.js"
+  },
+  "peerDependencies": {
+    "dompurify": ">=3"
   },
   "peerDependenciesMeta": {
     "dompurify": {
@@ -59,6 +66,7 @@
   },
   "homepage": "https://github.com/aotr/minu#readme",
   "devDependencies": {
-    "esbuild": "^0.28.1"
+    "jsdom": "^29.1.1",
+    "vite-plus": "^1.4.0"
   }
 }

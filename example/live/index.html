@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Live SSE</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Live SSE</h1>
+    <p class="lede">
+        One server-sent-events connection pushes a new price every 2 seconds. The same message
+        also updates an out-of-band ticker, so two regions change from one response.
+    </p>
+
+    <div class="card">
+        <div class="demo-row">
+            <span class="tag">event: price</span>
+            <span id="status" class="muted">Connecting…</span>
+            <button class="btn secondary" id="stop">Close stream</button>
+        </div>
+
+        <div id="price"><span class="price-tag">$0.00</span></div>
+        <div id="ticker" class="muted">Waiting for the stream…</div>
+        <p class="muted">Restart the demo server to watch EventSource reconnect automatically.</p>
+    </div>
+
+    <div minu-sse="/events" minu-sse-event="price" minu-target="#price" hidden></div>
+
+    <h2>The server message</h2>
+    <pre><code>event: price
+data: &lt;span class="price-tag"&gt;$42.00&lt;/span&gt;
+      &lt;div id="ticker" minu-oob="#ticker"&gt;tick 21 · 12:00:01 PM&lt;/div&gt;</code></pre>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li><code>minu-sse="/events"</code> opens a native <code>EventSource</code> on init.</li>
+        <li><code>minu-sse-event="price"</code> filters for the named event, not the default <code>message</code>.</li>
+        <li>Each message’s <code>data</code> is sanitized and swapped into <code>#price</code>.</li>
+        <li>The OOB ticker is applied first, then the main span is inserted.</li>
+        <li><code>EventSource</code> reconnects on its own; <code>retry:</code> and <code>id:</code> work as usual.</li>
+        <li>The close button calls <code>minu.closeStream(element)</code>.</li>
+    </ol>
+
+    <pre><code>&lt;div minu-sse="/events"
+     minu-sse-event="price"
+     minu-target="#price"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+    minu.init();
+    // close one stream:
+    minu.closeStream(document.querySelector('[minu-sse]'));
+&lt;/script&gt;</code></pre>
+
+    <p class="muted">
+        For chat, send with a normal <code>minu-post</code> and receive over SSE.
+        WebSocket is intentionally not included.
+    </p>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>
+        const status = document.getElementById('status');
+        const streamElement = document.querySelector('[minu-sse]');
+
+        streamElement.addEventListener('minu:sseOpen', () => {
+            status.textContent = 'Connected';
+        });
+        streamElement.addEventListener('minu:sseError', () => {
+            status.textContent = 'Reconnecting…';
+        });
+
+        document.getElementById('stop').addEventListener('click', () => {
+            minu.closeStream(streamElement);
+            status.textContent = 'Stream closed';
+        });
+
+        minu.init();
+    </script>
+</body>
+</html>

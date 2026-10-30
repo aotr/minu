@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Response Headers</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Response headers</h1>
+    <p class="lede">
+        The server can trigger client events, redirect, or reload the page from response
+        headers — without custom JavaScript in the response body.
+    </p>
+
+    <div class="card">
+        <div class="demo-row">
+            <button class="btn" minu-get="/demo/trigger" minu-trigger="click" minu-target="#header-result">
+                Fire Minu-Trigger
+            </button>
+            <button class="btn secondary" minu-get="/demo/redirect" minu-trigger="click">
+                Minu-Redirect
+            </button>
+            <button class="btn secondary" minu-get="/demo/refresh" minu-trigger="click">
+                Minu-Refresh
+            </button>
+        </div>
+
+        <div id="header-result" class="result">
+            <p class="muted">Click the first button and watch the event log.</p>
+        </div>
+        <div id="header-log" class="log" style="margin-top: 1rem;"><div>Event log ready.</div></div>
+    </div>
+
+    <h2>Headers</h2>
+    <table class="table">
+        <tr><th>Header</th><th>Effect</th></tr>
+        <tr><td><code>Minu-Trigger: ping</code></td><td>Fires <code>minu:trigger:ping</code> on the requestor.</td></tr>
+        <tr><td><code>Minu-Redirect: /url</code></td><td>Navigates with <code>location.assign</code>.</td></tr>
+        <tr><td><code>Minu-Refresh: true</code></td><td>Reloads the page.</td></tr>
+    </table>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li>The request completes normally; headers are inspected before the body is swapped.</li>
+        <li><code>Minu-Trigger</code> is split on commas and each name dispatches an event on the trigger element.</li>
+        <li>The event bubbles, so a single document listener can handle every trigger.</li>
+        <li><code>Minu-Redirect</code> and <code>Minu-Refresh</code> run before the swap.</li>
+        <li>The redirect button opens a small landing page; the refresh button reloads this page.</li>
+    </ol>
+
+    <pre><code>// server
+res.setHeader('Minu-Trigger', 'ping');
+res.end('&lt;p&gt;Done&lt;/p&gt;');
+
+// client
+document.addEventListener('minu:trigger:ping', (event) => {
+    console.log('server asked for', event.detail.name);
+});</code></pre>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>
+        const log = document.getElementById('header-log');
+        const write = (message) => {
+            const line = document.createElement('div');
+            line.textContent = new Date().toLocaleTimeString() + ' · ' + message;
+            log.prepend(line);
+        };
+
+        document.addEventListener('minu:trigger:ping', (event) => {
+            write('minu:trigger:' + event.detail.name + ' from ' + event.detail.url);
+        });
+        document.addEventListener('minu:contentLoaded', (event) => {
+            write('content loaded from ' + event.detail.url);
+        });
+
+        minu.init();
+    </script>
+</body>
+</html>

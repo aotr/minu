@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Out-of-band Updates</title>
+    <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Out-of-band updates</h1>
+    <p class="lede">
+        One request, three regions. The server returns a main fragment plus elements marked
+        <code>minu-oob</code>; Minu applies those first, then swaps the main target.
+    </p>
+
+    <div class="card">
+        <div class="demo-row">
+            <button class="btn"
+                    minu-post="/demo/oob"
+                    minu-trigger="click"
+                    minu-target="#oob-main"
+                    minu-indicator="#oob-spinner">Add to cart</button>
+            <span class="spinner" id="oob-spinner">Updating…</span>
+            <span class="cart">Cart: <span id="cart-count">0</span></span>
+        </div>
+
+        <div id="oob-main" class="result">
+            <p class="muted">Main panel — updated by the primary swap.</p>
+        </div>
+        <div id="toasts"></div>
+    </div>
+
+    <h2>The response</h2>
+    <pre><code>&lt;!-- server response --&gt;
+&lt;p&gt;Main panel updated at 12:00:01.&lt;/p&gt;
+
+&lt;span id="cart-count" minu-oob="#cart-count"&gt;1&lt;/span&gt;
+&lt;div class="toast" minu-oob="beforeend:#toasts"&gt;Item added&lt;/div&gt;</code></pre>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li>The button requests <code>/demo/oob</code> and targets <code>#oob-main</code>.</li>
+        <li>Minu parses the whole response into a template.</li>
+        <li>Elements with <code>minu-oob</code> are applied to their selectors and removed from the payload.</li>
+        <li><code>minu-oob="#cart-count"</code> defaults to <code>outerHTML</code>.</li>
+        <li><code>minu-oob="beforeend:#toasts"</code> appends the toast to the list.</li>
+        <li>The remaining HTML does the normal <code>innerHTML</code> swap into <code>#oob-main</code>.</li>
+    </ol>
+
+    <p class="muted">
+        An OOB-only response leaves the main target untouched. OOB mode is optional:
+        <code>minu-oob="beforeend:#toasts"</code>, <code>minu-oob="afterbegin:#list"</code>,
+        and the other swap modes work.
+    </p>
+
+    <script src="../../dist/minu.min.js"></script>
+    <script>minu.init();</script>
+</body>
+</html>
