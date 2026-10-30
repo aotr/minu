@@ -11,14 +11,29 @@ framework. Your server keeps returning HTML; Minu puts it where it belongs.
 
 ## Quick Start
 
-**CDN:**
+**CDN (UMD):**
 
 ```html
-<script src="https://unpkg.com/minu/dist/minu.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.min.js"
+        integrity="sha384-bvb7Fc/vjU8Hm+hZrH6DCXG2zwSdtAR52XhVqqXL0xGLeY8xcpKmijAxMAzcFVhP"
+        crossorigin="anonymous"></script>
 <script>
     minu.init();
 </script>
 ```
+
+Also available from unpkg:
+`https://unpkg.com/minu@1.6.1/dist/minu.min.js`
+
+**CDN (ESM):**
+
+```js
+import minu from 'https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.esm.mjs';
+minu.init();
+```
+
+Pin a version in production; both CDNs serve immutable npm files and allow
+cross-origin requests.
 
 **npm:**
 
@@ -251,6 +266,14 @@ minu.init();
 ```
 
 The secure build throws at load if DOMPurify is missing.
+
+CDN secure build:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.secure.min.js"></script>
+<script>minu.init();</script>
+```
 
 ## Examples
 
