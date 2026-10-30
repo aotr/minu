@@ -1,0 +1,68 @@
+{
+  "version": "1.6.0",
+  "gzip": 4090,
+  "gzipLabel": "4.0 KB",
+  "tests": 18,
+  "examples": [
+    {
+      "slug": "basic",
+      "title": "Basic auto-load",
+      "description": "Fetch an HTML fragment on load"
+    },
+    {
+      "slug": "form",
+      "title": "Form + states",
+      "description": "POST, loader, indicator, disable"
+    },
+    {
+      "slug": "tabs",
+      "title": "Tabs",
+      "description": "One shared target"
+    },
+    {
+      "slug": "search",
+      "title": "Search",
+      "description": "Debounce and minu-select"
+    },
+    {
+      "slug": "polling",
+      "title": "Polling",
+      "description": "every 2s and visibility pause"
+    },
+    {
+      "slug": "lazy",
+      "title": "Lazy reveal",
+      "description": "IntersectionObserver"
+    },
+    {
+      "slug": "swap",
+      "title": "Swap modes",
+      "description": "All eight swap behaviors"
+    },
+    {
+      "slug": "oob",
+      "title": "OOB updates",
+      "description": "One response, three regions"
+    },
+    {
+      "slug": "headers",
+      "title": "Headers",
+      "description": "Trigger, redirect, refresh"
+    },
+    {
+      "slug": "events",
+      "title": "Events",
+      "description": "Lifecycle and cancel"
+    },
+    {
+      "slug": "json",
+      "title": "JSON boundary",
+      "description": "Attributes vs responses"
+    },
+    {
+      "slug": "live",
+      "title": "Live SSE",
+      "description": "Server push"
+    }
+  ]
+}

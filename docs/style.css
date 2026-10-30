@@ -576,6 +576,19 @@ pre {
     font-size: 0.9rem;
 }
 
+.example-grid h2 {
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    letter-spacing: 0;
+}
+
+.example-grid p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+
 .example-grid span {
     color: var(--muted);
     font-size: 0.78rem;

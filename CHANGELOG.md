@@ -5,6 +5,14 @@
 - Added [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 - Added a GitHub Pages project page and per-scenario demo pages.
 - Added a browser-side adapter for the dynamic Pages demos.
+- Extracted the response protocol seam: OOB extraction, sanitization, select,
+  and main payload now live in `src/response.js`.
+- The secure build now preserves Minu protocol attributes through DOMPurify.
+- Fixed request teardown so a superseded request always releases its loader,
+  indicator, and disabled-state refcounts.
+- Shared the demo endpoint contract between the Node server and Pages adapter.
+- Added secure-build, demo-contract, and overlapping-request tests.
+- Generated `release.json` and the example gallery from one manifest.
 
 ## 1.6.0
 

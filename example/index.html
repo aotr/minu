@@ -17,56 +17,7 @@
     <pre><code>npm run examples
 # open http://localhost:3000</code></pre>
 
-    <div class="examples-grid">
-        <a class="example-card" href="basic/">
-            <h2>Basic auto-load</h2>
-            <p>Fetch an HTML fragment on page load and inject it into a <code>minu-content</code> target.</p>
-        </a>
-        <a class="example-card" href="form/">
-            <h2>Form + request states</h2>
-            <p>POST a form, show a loader/indicator, disable the button, and confirm before sending.</p>
-        </a>
-        <a class="example-card" href="tabs/">
-            <h2>Tabs + shared target</h2>
-            <p>Three click triggers write into one shared content area without duplicating targets.</p>
-        </a>
-        <a class="example-card" href="search/">
-            <h2>Search + debounce</h2>
-            <p>Wait for typing to pause, then extract one fragment from a full HTML response.</p>
-        </a>
-        <a class="example-card" href="polling/">
-            <h2>Polling</h2>
-            <p>Refresh a region every few seconds; polling pauses while the browser tab is hidden.</p>
-        </a>
-        <a class="example-card" href="lazy/">
-            <h2>Lazy reveal</h2>
-            <p>Load a fragment only when a placeholder scrolls into view.</p>
-        </a>
-        <a class="example-card" href="swap/">
-            <h2>Swap modes</h2>
-            <p>Compare innerHTML, outerHTML, beforebegin, afterbegin, beforeend, afterend, delete, and none.</p>
-        </a>
-        <a class="example-card" href="oob/">
-            <h2>Out-of-band updates</h2>
-            <p>One response updates the main panel, a cart count, and a toast list.</p>
-        </a>
-        <a class="example-card" href="headers/">
-            <h2>Response headers</h2>
-            <p>Dispatch an event, redirect, or reload the page from server response headers.</p>
-        </a>
-        <a class="example-card" href="events/">
-            <h2>Events + cancellation</h2>
-            <p>Watch the request lifecycle and cancel a request from <code>minu:beforeRequest</code>.</p>
-        </a>
-        <a class="example-card" href="json/">
-            <h2>JSON: what works</h2>
-            <p>Use JSON for <code>minu-vals</code> and <code>minu-headers</code>; see why responses must be HTML.</p>
-        </a>
-        <a class="example-card" href="live/">
-            <h2>Live SSE</h2>
-            <p>One server-sent-events connection pushes prices and out-of-band updates.</p>
-        </a>
-    </div>
+    <div class="examples-grid" data-gallery></div>
 
     <h2>Common setup</h2>
     <ol class="steps">
@@ -80,5 +31,7 @@
         Full attribute and event reference: <code>readme.md</code>.
         The demo server is <code>example/server.js</code>, with no runtime dependencies.
     </p>
+
+    <script src="../release.js" data-gallery-base=""></script>
 </body>
 </html>

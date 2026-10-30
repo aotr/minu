@@ -4,7 +4,7 @@
 
 Lightweight HTML fragment loader. Fetch and inject server-rendered HTML — with
 AJAX, forms, polling, out-of-band swaps, and live SSE content. Zero runtime
-dependencies, ~3.7 KB gzipped. MIT licensed; contributions welcome.
+dependencies, ~4.0 KB gzipped. MIT licensed; contributions welcome.
 
 Minu is for server-rendered apps that want htmx-style behavior without the
 framework. Your server keeps returning HTML; Minu puts it where it belongs.

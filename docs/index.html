@@ -22,7 +22,7 @@
     <main>
         <section class="hero">
             <div class="hero-copy">
-                <p class="eyebrow">v1.6.0 · 3.8 KB gzip · zero runtime deps</p>
+                <p class="eyebrow">v<span data-release="version">1.6.0</span> · <span data-release="gzipLabel">4.0 KB</span> gzip · zero runtime deps</p>
                 <h1>HTML fragments,<br><em>not a framework.</em></h1>
                 <p class="lede">
                     Minu fetches server-rendered HTML and puts it where it belongs.
@@ -59,8 +59,8 @@
 
         <section class="strip" aria-label="Project facts">
             <div><strong>0</strong><span>runtime dependencies</span></div>
-            <div><strong>3.8 KB</strong><span>minified + gzipped</span></div>
-            <div><strong>14</strong><span>tests passing</span></div>
+            <div><strong data-release="gzipLabel">4.0 KB</strong><span>minified + gzipped</span></div>
+            <div><strong data-release="tests">18</strong><span>tests passing</span></div>
             <div><strong>1</strong><span>small core</span></div>
         </section>
 
@@ -72,7 +72,7 @@
             </div>
 
             <div class="quick-grid">
-                <pre><code>&lt;script src="https://unpkg.com/minu@1.6.0/dist/minu.min.js"&gt;&lt;/script&gt;
+                <pre><code>&lt;script src="https://unpkg.com/minu@<span data-release="version">1.6.0</span>/dist/minu.min.js"&gt;&lt;/script&gt;
 
 &lt;div minu-get="/widgets/price"
      minu-trigger="load"
@@ -183,20 +183,7 @@
                 </p>
             </div>
 
-            <div class="example-grid">
-                <a href="example/basic/"><strong>Basic auto-load</strong><span>fetch on load</span></a>
-                <a href="example/form/"><strong>Form + states</strong><span>POST, loader, disable</span></a>
-                <a href="example/tabs/"><strong>Tabs</strong><span>shared target</span></a>
-                <a href="example/search/"><strong>Search</strong><span>debounce + select</span></a>
-                <a href="example/polling/"><strong>Polling</strong><span>every 2s</span></a>
-                <a href="example/lazy/"><strong>Lazy reveal</strong><span>IntersectionObserver</span></a>
-                <a href="example/swap/"><strong>Swap modes</strong><span>all eight</span></a>
-                <a href="example/oob/"><strong>OOB updates</strong><span>one response, 3 regions</span></a>
-                <a href="example/headers/"><strong>Headers</strong><span>trigger, redirect, refresh</span></a>
-                <a href="example/events/"><strong>Events</strong><span>lifecycle + cancel</span></a>
-                <a href="example/json/"><strong>JSON boundary</strong><span>attributes vs responses</span></a>
-                <a href="example/live/"><strong>Live SSE</strong><span>server push</span></a>
-            </div>
+            <div class="example-grid" data-gallery></div>
 
             <p class="footnote">
                 Every example above is a separate page. GitHub Pages is static, so the dynamic
@@ -241,7 +228,8 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/minu@1.6.0/dist/minu.min.js"></script>
+    <script src="release.js" data-gallery-base="example/"></script>
+    <script src="dist/minu.min.js"></script>
     <script>
         document.querySelectorAll('[data-copy]').forEach((button) => {
             button.addEventListener('click', async () => {

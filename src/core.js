@@ -1,5 +1,7 @@
 /* minu core — all logic lives here, entries only provide a sanitizer. */
 
+import { createResponsePipeline } from './response.js';
+
 const VERBS = ['get', 'post', 'put', 'patch', 'delete'];
 const DEFAULT_SELECTOR = '[minu-get],[minu-post],[minu-put],[minu-patch],[minu-delete],[minu-sse]';
 
@@ -85,7 +87,7 @@ export function createMinu(sanitize) {
     const settings = { headers: {}, timeout: 0, credentials: '' };
     const initialized = new Set();
     const states = new Map();
-    const disabledNodes = new Map();
+    const busyNodes = new Map();
 
     const getState = (element) => {
         let state = states.get(element);
@@ -168,6 +170,29 @@ export function createMinu(sanitize) {
         return queryAll(value);
     };
 
+    const acquire = (node, kind, start, stop) => {
+        let kinds = busyNodes.get(node);
+        if (!kinds) {
+            kinds = new Map();
+            busyNodes.set(node, kinds);
+        }
+        const record = kinds.get(kind);
+        if (record) record.count += 1;
+        else kinds.set(kind, { count: 1, stop });
+        start(node);
+    };
+
+    const release = (node, kind) => {
+        const kinds = busyNodes.get(node);
+        const record = kinds && kinds.get(kind);
+        if (!record) return;
+        record.count -= 1;
+        if (record.count > 0) return;
+        record.stop(node);
+        kinds.delete(kind);
+        if (!kinds.size) busyNodes.delete(node);
+    };
+
     const swap = (target, html, mode) => {
         if (!target) return;
         switch ((mode || 'innerHTML').toLowerCase()) {
@@ -190,50 +215,7 @@ export function createMinu(sanitize) {
         }
     };
 
-    const processOutOfBand = (fragment) => {
-        fragment.querySelectorAll('[minu-oob]').forEach((node) => {
-            const marker = node.getAttribute('minu-oob');
-            let mode = 'outerHTML';
-            let selector = marker;
-            const colon = marker.indexOf(':');
-
-            if (colon > -1) {
-                mode = marker.slice(0, colon) || mode;
-                selector = marker.slice(colon + 1);
-            }
-            if (selector === 'true' && node.id) selector = `#${node.id}`;
-
-            const target = selector ? queryOne(selector) : null;
-            node.removeAttribute('minu-oob');
-            if (target) swap(target, node.outerHTML, mode);
-            node.remove();
-        });
-    };
-
-    const prepareHtml = (element, html) => {
-        let output = sanitize(html);
-        const selector = element.getAttribute('minu-select');
-        if (output.indexOf('minu-oob') === -1 && !selector) return output;
-
-        const hadOob = output.indexOf('minu-oob') !== -1;
-        const template = document.createElement('template');
-        template.innerHTML = output;
-        processOutOfBand(template.content);
-
-        if (selector) {
-            try {
-                const selected = template.content.querySelector(selector);
-                return selected ? selected.outerHTML : null;
-            } catch (error) {
-                console.warn('minu: invalid minu-select selector', selector);
-                return null;
-            }
-        }
-
-        const rest = template.innerHTML;
-        // An OOB-only response must not wipe the main target.
-        return hadOob && !rest.trim() ? null : rest;
-    };
+    const prepareHtml = createResponsePipeline({ sanitize, queryOne, swap }).prepare;
 
     const collectData = (element) => {
         const data = new FormData();
@@ -328,36 +310,48 @@ export function createMinu(sanitize) {
         }
 
         const indicators = resolveList(element, 'minu-indicator', true);
-        indicators.forEach((node) => node.classList.add('minu-requesting'));
+        indicators.forEach((node) => acquire(
+            node,
+            'indicator',
+            (target) => target.classList.add('minu-requesting'),
+            (target) => target.classList.remove('minu-requesting')
+        ));
 
         const loader = resolveLoader(element);
-        if (loader) loader.style.display = 'block';
+        if (loader) {
+            const display = loader.style.display;
+            acquire(
+                loader,
+                'loader',
+                (target) => { target.style.display = 'block'; },
+                (target) => { target.style.display = display; }
+            );
+        }
 
         const disable = resolveList(element, 'minu-disable', true);
         disable.forEach((node) => {
-            const record = disabledNodes.get(node);
-            if (record) record.count += 1;
-            else disabledNodes.set(node, { count: 1, wasDisabled: node.disabled });
-            node.disabled = true;
-            node.setAttribute('aria-busy', 'true');
+            const wasDisabled = node.disabled;
+            acquire(
+                node,
+                'disabled',
+                (target) => {
+                    target.disabled = true;
+                    target.setAttribute('aria-busy', 'true');
+                },
+                (target) => {
+                    target.disabled = wasDisabled;
+                    target.removeAttribute('aria-busy');
+                }
+            );
         });
 
-        const cleanup = () => {
-            if (state.controller !== controller) return false;
+        const finish = () => {
             clearTimeout(timer);
+            indicators.forEach((node) => release(node, 'indicator'));
+            if (loader) release(loader, 'loader');
+            disable.forEach((node) => release(node, 'disabled'));
+            if (state.controller !== controller) return false;
             state.controller = null;
-            indicators.forEach((node) => node.classList.remove('minu-requesting'));
-            if (loader) loader.style.display = 'none';
-            disable.forEach((node) => {
-                const record = disabledNodes.get(node);
-                if (!record) return;
-                record.count -= 1;
-                if (record.count <= 0) {
-                    node.disabled = record.wasDisabled;
-                    node.removeAttribute('aria-busy');
-                    disabledNodes.delete(node);
-                }
-            });
             return true;
         };
 
@@ -405,7 +399,7 @@ export function createMinu(sanitize) {
                 fire(element, 'minu:contentError', { error, url: requestUrl });
             })
             .finally(() => {
-                if (cleanup()) {
+                if (finish()) {
                     fire(element, 'minu:afterRequest', { url: requestUrl, method, ok });
                 }
             });
@@ -614,11 +608,10 @@ export function createMinu(sanitize) {
         });
         states.clear();
         initialized.clear();
-        disabledNodes.forEach((record, node) => {
-            node.disabled = record.wasDisabled;
-            node.removeAttribute('aria-busy');
+        busyNodes.forEach((kinds, node) => {
+            kinds.forEach((record) => record.stop(node));
         });
-        disabledNodes.clear();
+        busyNodes.clear();
     };
 
     return {

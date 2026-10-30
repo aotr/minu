@@ -33,7 +33,7 @@ jobs:
           mkdir -p site
           cp -R docs/. site/
           cp -R example site/example
-          cp demo-api.js site/demo-api.js
+          cp demo-api.js release.js release.json site/
           mkdir -p site/dist
           cp dist/minu.min.js site/dist/minu.min.js
       - uses: actions/configure-pages@v5

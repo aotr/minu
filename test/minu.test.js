@@ -254,6 +254,54 @@ test('toggles indicator and disabled state during a request', async () => {
     assert.equal(document.getElementById('spinner').classList.contains('minu-requesting'), false);
 });
 
+test('restores disabled state when a request is superseded', async () => {
+    setup('<button id="b" minu-get="/x" minu-trigger="click" minu-disable="self" ' +
+        'minu-indicator="#spinner">Go</button><span id="spinner"></span>');
+
+    const pending = [];
+    global.fetch = (url, options) => new Promise((resolve, reject) => {
+        pending.push({ resolve });
+        options.signal.addEventListener('abort', () => {
+            const error = new Error('aborted');
+            error.name = 'AbortError';
+            reject(error);
+        });
+    });
+
+    minu.init();
+    click(document.getElementById('b'));
+    click(document.getElementById('b'));
+    pending[1].resolve(new Response('ok', { status: 200 }));
+    await tick(30);
+
+    assert.equal(document.getElementById('b').disabled, false);
+    assert.equal(document.getElementById('b').hasAttribute('aria-busy'), false);
+    assert.equal(document.getElementById('spinner').classList.contains('minu-requesting'), false);
+});
+
+test('restores a control that started disabled after overlapping requests', async () => {
+    setup('<button id="b" disabled minu-get="/x" minu-trigger="click" minu-disable="self">Go</button>');
+
+    const pending = [];
+    global.fetch = (url, options) => new Promise((resolve, reject) => {
+        pending.push({ resolve });
+        options.signal.addEventListener('abort', () => {
+            const error = new Error('aborted');
+            error.name = 'AbortError';
+            reject(error);
+        });
+    });
+
+    minu.init();
+    minu.reloadComponents('#b');
+    minu.reloadComponents('#b');
+    pending[1].resolve(new Response('ok', { status: 200 }));
+    await tick(30);
+
+    assert.equal(document.getElementById('b').disabled, true);
+    assert.equal(document.getElementById('b').hasAttribute('aria-busy'), false);
+});
+
 test('the once modifier removes the listener after the first event', async () => {
     setup('<button id="b" minu-get="/x" minu-trigger="click once">Go</button><div minu-content></div>');
     const calls = respond('ok');

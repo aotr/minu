@@ -221,8 +221,9 @@ core ≤ 4 KB gzip (SSE ships in core; no extra entry).
 
 ## 5. Guardrails
 
-- **Size:** core budget enforced in `build.js`: 4 KB gzip minified UMD, 4.5 KB
-  for the unminified ESM. Exceeding fails the build.
+- **Size:** core budget enforced in `build.js`: 4 KB gzip minified UMD, 4.25 KB
+  for the secure UMD (DOMPurify allowlist), 4.5 KB for the unminified ESM.
+  Exceeding fails the build.
 - **Build:** Vite+ (Rolldown) library mode; no runtime dependencies.
 - **Zero runtime deps.** DOMPurify stays optional and only in the secure build.
 - **One core**, two thin entries. Never duplicate logic again.

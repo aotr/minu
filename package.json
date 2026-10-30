@@ -69,6 +69,7 @@
     "email": "animesh.aotr@gmail.com"
   },
   "devDependencies": {
+    "dompurify": "^3.4.17",
     "jsdom": "^29.1.1",
     "vite-plus": "^1.4.0"
   }
