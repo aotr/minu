@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.6.1 — 2026-10-30
 
 - Added [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 - Added a GitHub Pages project page and per-scenario demo pages.

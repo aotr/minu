@@ -1,6 +1,6 @@
 {
   "name": "minu",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Lightweight HTML fragment loader — AJAX, polling, and live SSE content with zero dependencies",
   "main": "dist/minu.min.js",
   "module": "dist/minu.esm.mjs",
