@@ -199,3 +199,125 @@
         margin-top: 0.8rem;
     }
 }
+
+.skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 20;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.skip-link:focus {
+    top: 1rem;
+}
+
+:focus-visible {
+    outline: 3px solid var(--violet);
+    outline-offset: 2px;
+}
+
+.api-search {
+    width: 100%;
+    margin: 0 0 0.9rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--ink);
+    font: 0.82rem var(--sans);
+}
+
+.api-search::placeholder {
+    color: var(--muted);
+}
+
+.api-sidebar nav a {
+    padding: 0.35rem 0.45rem;
+    border-radius: 6px;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.api-sidebar nav a:hover,
+.api-sidebar nav a:focus-visible {
+    background: rgba(90, 75, 255, 0.08);
+    color: var(--violet-dark);
+}
+
+.api-sidebar nav a[aria-current="page"] {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.api-content section[hidden] {
+    display: none;
+}
+
+.code-block {
+    position: relative;
+    margin: 0.8rem 0 1.1rem;
+}
+
+.code-block pre {
+    margin: 0;
+}
+
+.code-copy {
+    position: absolute;
+    top: 0.55rem;
+    right: 0.55rem;
+    padding: 0.28rem 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e9e5db;
+    font: 0.7rem var(--mono);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 150ms ease, background 150ms ease;
+}
+
+.code-block:hover .code-copy,
+.code-copy:focus-visible {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.16);
+}
+
+@media (hover: none) {
+    .code-copy {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .code-copy {
+        transition: none;
+    }
+}
+
+@media (max-width: 840px) {
+    .api-search {
+        max-width: 24rem;
+    }
+}
+
+@media (max-width: 840px) {
+    .api-sidebar nav a {
+        min-height: 44px;
+    }
+}
+
+.api-empty {
+    margin: 1.2rem 0 0;
+    padding: 1rem;
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    background: var(--card);
+}

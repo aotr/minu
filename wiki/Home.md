@@ -3,7 +3,7 @@
 Minu is a 4.0 KB HTML fragment loader for server-rendered apps. It adds requests, forms, polling, out-of-band swaps, and SSE without a SPA or a build step.
 
 - [API Reference](API-Reference)
-- [Project page](https://aotr.github.io/minu/)
+- [Project page](https://aotr.github.io/minu/home/)
 - [Examples](https://aotr.github.io/minu/example/)
 - [npm](https://www.npmjs.com/package/minu)
 - [GitHub](https://github.com/aotr/minu)

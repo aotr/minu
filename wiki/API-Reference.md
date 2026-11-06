@@ -2,7 +2,7 @@
 
 Minu is a declarative HTML fragment loader. Add an attribute, let the server return HTML, and choose where it lands.
 
-Canonical web version: https://aotr.github.io/minu/api/
+Canonical web version: https://aotr.github.io/minu/
 
 ## Install
 
