@@ -1,0 +1,6 @@
+- [Home](Home)
+- [API Reference](API-Reference)
+- [Examples](https://aotr.github.io/minu/example/)
+- [Project page](https://aotr.github.io/minu/)
+- [npm](https://www.npmjs.com/package/minu)
+- [Security](https://github.com/aotr/minu/blob/main/SECURITY.md)
