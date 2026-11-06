@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference — Minu</title>
+    <meta name="description" content="Minu API reference: attributes, triggers, events, methods, server protocol, SSE, JSON limits, and security.">
+    <meta name="theme-color" content="#5a4bff">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="api.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="../" aria-label="Minu home">
+            <img src="../logo.png" alt="" width="36" height="36">
+            <span class="brand-word">minu<i>.</i></span>
+        </a>
+        <nav>
+            <a href="../#features">Features</a>
+            <a href="./" class="active">API</a>
+            <a href="../example/">Examples</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a class="nav-cta" href="https://www.npmjs.com/package/minu">npm ↗</a>
+        </nav>
+    </header>
+
+    <main class="api-layout">
+        <aside class="api-sidebar">
+            <p class="eyebrow">Reference</p>
+            <nav aria-label="API sections">
+                <a href="#install">Install</a>
+                <a href="#initialize">Initialize</a>
+                <a href="#requests">Requests</a>
+                <a href="#swaps">Targets &amp; swaps</a>
+                <a href="#forms">Forms &amp; values</a>
+                <a href="#triggers">Triggers</a>
+                <a href="#state">UI state</a>
+                <a href="#events">Events</a>
+                <a href="#methods">Methods</a>
+                <a href="#protocol">Server protocol</a>
+                <a href="#oob">OOB updates</a>
+                <a href="#sse">SSE</a>
+                <a href="#json">JSON boundary</a>
+                <a href="#security">Security</a>
+                <a href="#typescript">TypeScript</a>
+                <a href="#examples">Examples</a>
+            </nav>
+            <p class="api-version">v<span data-release="version">1.6.1</span> · <span data-release="gzipLabel">4.0 KB</span> gzip</p>
+        </aside>
+
+        <div class="api-content">
+            <header class="api-intro">
+                <p class="eyebrow">Minu API reference</p>
+                <h1>Everything in 4 KB.</h1>
+                <p class="lede">
+                    Minu is a declarative HTML fragment loader. Add an attribute, let the
+                    server return HTML, and choose where it lands. This page is the
+                    complete public surface: attributes, triggers, events, methods, server
+                    headers, SSE, JSON limits, and security.
+                </p>
+                <div class="api-meta">
+                    <span>v<span data-release="version">1.6.1</span></span>
+                    <span><span data-release="gzipLabel">4.0 KB</span> min+gzip</span>
+                    <span>zero runtime deps</span>
+                    <span>MIT</span>
+                </div>
+            </header>
+
+            <section id="install">
+                <h2>Install</h2>
+                <h3>npm</h3>
+                <pre><code>npm install minu</code></pre>
+                <pre><code>const minu = require('minu');   // CommonJS
+// or: import minu from 'minu'; // ESM
+minu.init();</code></pre>
+
+                <h3>CDN</h3>
+                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.min.js"
+        integrity="sha384-bvb7Fc/vjU8Hm+hZrH6DCXG2zwSdtAR52XhVqqXL0xGLeY8xcpKmijAxMAzcFVhP"
+        crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;script&gt;minu.init();&lt;/script&gt;</code></pre>
+                <p>
+                    Also available from
+                    <a href="https://unpkg.com/minu@1.6.1/dist/minu.min.js">unpkg</a>.
+                    Pin a version in production.
+                </p>
+
+                <h3>ESM from CDN</h3>
+                <pre><code>import minu from 'https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.esm.mjs';
+minu.init();</code></pre>
+
+                <h3>Secure build</h3>
+                <p>
+                    The default build strips scripts, inline handlers, and
+                    <code>javascript:</code> URLs. It is not an XSS boundary. For
+                    untrusted HTML, use DOMPurify and the secure entry.
+                </p>
+                <pre><code>npm install minu dompurify</code></pre>
+                <pre><code>import minu from 'minu/secure';
+minu.init();</code></pre>
+                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.secure.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;minu.init();&lt;/script&gt;</code></pre>
+            </section>
+
+            <section id="initialize">
+                <h2>Initialize</h2>
+                <p>
+                    Call <code>minu.init()</code> once after the DOM is ready. It finds
+                    elements matching the default selector and binds their triggers.
+                    Repeated calls do not double-bind.
+                </p>
+                <pre><code>minu.init();
+// or a narrower scope:
+minu.init('#account [minu-get]');</code></pre>
+                <p>The default selector is:</p>
+                <pre><code>[minu-get],[minu-post],[minu-put],[minu-patch],[minu-delete],[minu-sse]</code></pre>
+                <p>
+                    The DOM can change after init. Call <code>minu.init(selector)</code>
+                    for new elements, or call <code>minu.init()</code> again.
+                </p>
+            </section>
+
+            <section id="requests">
+                <h2>Requests</h2>
+                <p>
+                    One verb attribute selects the request. If several are present, the
+                    first in this order wins: <code>get</code>, <code>post</code>,
+                    <code>put</code>, <code>patch</code>, <code>delete</code>.
+                </p>
+                <table>
+                    <thead><tr><th>Attribute</th><th>Behavior</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>minu-get</code></td><td>GET the URL.</td></tr>
+                        <tr><td><code>minu-post</code></td><td>POST the URL.</td></tr>
+                        <tr><td><code>minu-put</code></td><td>PUT the URL.</td></tr>
+                        <tr><td><code>minu-patch</code></td><td>PATCH the URL.</td></tr>
+                        <tr><td><code>minu-delete</code></td><td>DELETE the URL.</td></tr>
+                        <tr><td><code>minu-trigger</code></td><td>Event or trigger expression. Default <code>load</code>.</td></tr>
+                        <tr><td><code>minu-target</code></td><td>CSS selector for the swap target. <code>this</code> means the trigger element.</td></tr>
+                        <tr><td><code>minu-swap</code></td><td>Swap mode. Default <code>innerHTML</code>.</td></tr>
+                        <tr><td><code>minu-vals</code></td><td>JSON object merged into request values.</td></tr>
+                        <tr><td><code>minu-include</code></td><td>Selector or selectors of extra fields/forms to serialize.</td></tr>
+                        <tr><td><code>minu-headers</code></td><td>JSON object merged into request headers.</td></tr>
+                        <tr><td><code>minu-credentials</code></td><td><code>omit</code>, <code>same-origin</code>, or <code>include</code>.</td></tr>
+                        <tr><td><code>minu-timeout</code></td><td>Timeout in milliseconds. Overrides <code>config.timeout</code>.</td></tr>
+                        <tr><td><code>minu-confirm</code></td><td>Text shown through <code>window.confirm</code> before sending.</td></tr>
+                        <tr><td><code>minu-prevent</code></td><td>Set to <code>false</code> to allow the native click or submit.</td></tr>
+                        <tr><td><code>minu-select</code></td><td>Extract one CSS-selected fragment from the response.</td></tr>
+                    </tbody>
+                </table>
+                <p>
+                    Every request sends <code>X-Minu-Request: true</code>. Server code can
+                    use that to return a fragment instead of a full page.
+                </p>
+                <pre><code>&lt;button minu-post="/cart/add"
+        minu-trigger="click"
+        minu-target="#cart"
+        minu-swap="innerHTML"
+        minu-confirm="Add this item?"&gt;
+    Add to cart
+&lt;/button&gt;</code></pre>
+            </section>
+
+            <section id="swaps">
+                <h2>Targets &amp; swaps</h2>
+                <p>Target resolution runs in this order:</p>
+                <ol>
+                    <li><code>minu-target</code>, if present.</li>
+                    <li>A <code>[minu-content]</code> inside the trigger element.</li>
+                    <li>The single <code>[minu-content]</code> on the page.</li>
+                    <li>The trigger element itself.</li>
+                </ol>
+                <table>
+                    <thead><tr><th><code>minu-swap</code></th><th>Result</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>innerHTML</code> (default)</td><td>Replace the target's children.</td></tr>
+                        <tr><td><code>outerHTML</code></td><td>Replace the target itself.</td></tr>
+                        <tr><td><code>beforebegin</code></td><td>Insert before the target.</td></tr>
+                        <tr><td><code>afterbegin</code></td><td>Insert as the first child.</td></tr>
+                        <tr><td><code>beforeend</code></td><td>Insert as the last child.</td></tr>
+                        <tr><td><code>afterend</code></td><td>Insert after the target.</td></tr>
+                        <tr><td><code>delete</code></td><td>Remove the target. The response body is ignored.</td></tr>
+                        <tr><td><code>none</code></td><td>Fetch, fire events, do not swap.</td></tr>
+                    </tbody>
+                </table>
+                <p>
+                    A missing explicit target falls back through the resolution order. If
+                    you need a hard failure, validate the target selector in your own
+                    <code>minu:beforeRequest</code> listener.
+                </p>
+                <pre><code>&lt;div id="list"&gt;&lt;/div&gt;
+&lt;button minu-get="/items/next"
+        minu-trigger="click"
+        minu-target="#list"
+        minu-swap="beforeend"&gt;
+    Load one more
+&lt;/button&gt;</code></pre>
+            </section>
+
+            <section id="forms">
+                <h2>Forms &amp; values</h2>
+                <p>
+                    When the trigger is inside a form, or is the form, Minu serializes the
+                    form automatically. Files produce <code>multipart/form-data</code>;
+                    the rest are <code>application/x-www-form-urlencoded</code>. GET
+                    values are appended to the query string.
+                </p>
+                <pre><code>&lt;form minu-post="/contact" minu-trigger="submit"&gt;
+    &lt;input name="name" required&gt;
+    &lt;input name="email" type="email" required&gt;
+    &lt;textarea name="message"&gt;&lt;/textarea&gt;
+    &lt;button type="submit"&gt;Send&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+                <p>
+                    <code>minu-vals</code> adds values that are not in the form. Nested
+                    objects are stringified.
+                </p>
+                <pre><code>&lt;button minu-post="/save"
+        minu-vals='{"source":"demo","nested":{"level":2}}'
+        minu-headers='{"X-Demo-Token":"abc"}'&gt;
+    Save
+&lt;/button&gt;</code></pre>
+                <p>
+                    <code>minu-include</code> pulls in other controls or forms by selector.
+                    It accepts a comma-separated CSS selector.
+                </p>
+                <pre><code>&lt;input id="search" name="q" value="coffee"&gt;
+&lt;button minu-get="/search"
+        minu-include="#search"
+        minu-target="#results"&gt;
+    Search
+&lt;/button&gt;</code></pre>
+            </section>
+
+            <section id="triggers">
+                <h2>Triggers</h2>
+                <p>
+                    <code>minu-trigger</code> is a DOM event name plus optional modifiers.
+                    The first token is the event. The remaining tokens configure it.
+                </p>
+                <table>
+                    <thead><tr><th>Token</th><th>Meaning</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>load</code></td><td>Run on init. This is the default.</td></tr>
+                        <tr><td><code>click</code>, <code>submit</code>, <code>change</code>, <code>keyup</code>, …</td><td>Any DOM event.</td></tr>
+                        <tr><td><code>every 5s</code></td><td>Poll. Skips ticks while the document is hidden.</td></tr>
+                        <tr><td><code>revealed</code></td><td>Load once when the element enters the viewport.</td></tr>
+                        <tr><td><code>intersect</code></td><td>Load each time the element enters the viewport.</td></tr>
+                        <tr><td><code>once</code></td><td>Remove the listener after the first event.</td></tr>
+                        <tr><td><code>changed</code></td><td>Skip events where the field value did not change.</td></tr>
+                        <tr><td><code>delay:300ms</code></td><td>Debounce.</td></tr>
+                        <tr><td><code>throttle:500ms</code></td><td>Throttle.</td></tr>
+                        <tr><td><code>from:#other</code></td><td>Listen on another element.</td></tr>
+                    </tbody>
+                </table>
+                <pre><code>&lt;input minu-get="/search"
+       minu-trigger="keyup changed delay:300ms"
+       minu-target="#results"&gt;
+&lt;div id="results"&gt;&lt;/div&gt;</code></pre>
+                <p>
+                    <code>every 5s</code> does not queue. A new tick aborts the in-flight
+                    request for that element and starts another. The last response wins.
+                    The first tick runs after the interval, not immediately.
+                </p>
+                <p>
+                    There is no key-filter grammar such as “Enter only.” Bind your own
+                    <code>keydown</code> listener and call
+                    <code>minu.reloadComponents('#search')</code> when the key matches.
+                </p>
+                <p>
+                    <code>revealed</code> and <code>intersect</code> use
+                    <code>IntersectionObserver</code>. Browsers without it load
+                    immediately. <code>destroy()</code> disconnects observers and clears
+                    intervals.
+                </p>
+            </section>
+
+            <section id="state">
+                <h2>UI state</h2>
+                <table>
+                    <thead><tr><th>Attribute</th><th>Behavior</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>minu-content</code></td><td>Default target inside the trigger element.</td></tr>
+                        <tr><td><code>minu-loader</code></td><td>Legacy loader. Display is toggled during the request.</td></tr>
+                        <tr><td><code>minu-indicator</code></td><td>Selector or selectors receiving <code>minu-requesting</code>.</td></tr>
+                        <tr><td><code>minu-disable</code></td><td>Selector or selectors disabled during the request. <code>self</code> and <code>this</code> work.</td></tr>
+                    </tbody>
+                </table>
+                <p>
+                    Prefer <code>minu-indicator</code> with CSS. It does not touch layout
+                    properties.
+                </p>
+                <pre><code>.spinner { display: none; }
+.spinner.minu-requesting { display: inline-flex; }</code></pre>
+                <pre><code>&lt;button minu-post="/save"
+        minu-indicator="#spinner"
+        minu-disable="#save"&gt;
+    Save
+&lt;/button&gt;
+&lt;span class="spinner" id="spinner"&gt;Saving…&lt;/span&gt;</code></pre>
+                <p>
+                    Overlapping requests share refcounted state. A superseded request
+                    releases its own loader, indicator, and disabled-state claims; it does
+                    not release the request that replaced it.
+                </p>
+            </section>
+
+            <section id="events">
+                <h2>Events</h2>
+                <p>
+                    All Minu events bubble, are composed, and carry <code>detail</code>.
+                    <code>minu:beforeRequest</code> is cancelable.
+                </p>
+                <table>
+                    <thead><tr><th>Event</th><th>When</th><th>Detail</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>minu:contentSetup</code></td><td>Element initialized.</td><td><code>{ url, trigger }</code></td></tr>
+                        <tr><td><code>minu:beforeRequest</code></td><td>Before the fetch. Cancelable.</td><td><code>{ url, method, element }</code></td></tr>
+                        <tr><td><code>minu:contentLoaded</code></td><td>Response parsed and swapped.</td><td><code>{ html, url, method }</code></td></tr>
+                        <tr><td><code>minu:contentError</code></td><td>Network, HTTP, or timeout failure.</td><td><code>{ error, url }</code></td></tr>
+                        <tr><td><code>minu:afterRequest</code></td><td>After cleanup. Not fired when <code>beforeRequest</code> cancels.</td><td><code>{ url, method, ok }</code></td></tr>
+                        <tr><td><code>minu:sseOpen</code></td><td>SSE connection opens.</td><td><code>{ url }</code></td></tr>
+                        <tr><td><code>minu:sseMessage</code></td><td>SSE message received and processed.</td><td><code>{ data, event, url }</code></td></tr>
+                        <tr><td><code>minu:sseError</code></td><td>SSE connection error.</td><td><code>{ error, url }</code></td></tr>
+                        <tr><td><code>minu:trigger:&lt;name&gt;</code></td><td>From a <code>Minu-Trigger</code> response header.</td><td><code>{ name, url }</code></td></tr>
+                    </tbody>
+                </table>
+                <pre><code>document.addEventListener('minu:beforeRequest', (event) =&gt; {
+    if (!confirm('Send?')) event.preventDefault();
+});
+
+document.addEventListener('minu:contentLoaded', (event) =&gt; {
+    console.log(event.detail.url, event.detail.method);
+});</code></pre>
+                <p>
+                    A request that is aborted by a newer request does not fire
+                    <code>minu:afterRequest</code>. Timeouts and HTTP errors do.
+                </p>
+            </section>
+
+            <section id="methods">
+                <h2>Methods</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>minu.init(selector?)</code></td><td>Initialize matching elements. Idempotent. Default selector covers all verb attributes and <code>minu-sse</code>.</td></tr>
+                        <tr><td><code>minu.reloadComponents(selector | string[])</code></td><td>Re-fetch every matching element that has a URL.</td></tr>
+                        <tr><td><code>minu.reloadComponent(...)</code></td><td>Deprecated alias for <code>reloadComponents</code>.</td></tr>
+                        <tr><td><code>minu.config({ headers, timeout, credentials })</code></td><td>Merge global request defaults. Per-element headers override global headers.</td></tr>
+                        <tr><td><code>minu.destroy()</code></td><td>Abort in-flight requests, remove listeners, clear timers and observers, close SSE streams, restore disabled controls.</td></tr>
+                        <tr><td><code>minu.closeStream(element?)</code></td><td>Close one SSE stream, or all streams when omitted.</td></tr>
+                    </tbody>
+                </table>
+                <pre><code>minu.config({
+    headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+    },
+    timeout: 10000,
+    credentials: 'same-origin',
+});
+
+minu.reloadComponents(['#price', '#cart']);
+minu.closeStream(document.querySelector('[minu-sse]'));
+minu.destroy();</code></pre>
+            </section>
+
+            <section id="protocol">
+                <h2>Server protocol</h2>
+                <table>
+                    <thead><tr><th>Response header</th><th>Effect</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>Minu-Trigger: refresh</code></td><td>Dispatch <code>minu:trigger:refresh</code> on the requestor. Comma-separated names are allowed.</td></tr>
+                        <tr><td><code>Minu-Redirect: /login</code></td><td>Navigate with <code>location.assign</code>.</td></tr>
+                        <tr><td><code>Minu-Refresh: true</code></td><td>Reload the page.</td></tr>
+                    </tbody>
+                </table>
+                <p>
+                    Headers are applied before the body swap. <code>204</code> and
+                    <code>205</code> responses skip the swap.
+                </p>
+            </section>
+
+            <section id="oob">
+                <h2>Out-of-band updates</h2>
+                <p>
+                    An OOB element is applied to another selector and removed from the
+                    main payload. The default mode is <code>outerHTML</code>.
+                </p>
+                <pre><code>&lt;!-- response --&gt;
+&lt;div id="cart" minu-oob="#cart"&gt;3 items&lt;/div&gt;
+&lt;div class="toast" minu-oob="beforeend:#toasts"&gt;Saved&lt;/div&gt;
+&lt;p&gt;Main panel content.&lt;/p&gt;</code></pre>
+                <p>
+                    <code>minu-oob="#cart"</code> replaces the target. Use
+                    <code>mode:selector</code> for another mode, for example
+                    <code>beforeend:#toasts</code> or <code>afterbegin:#list</code>.
+                    <code>minu-oob="true"</code> targets the element's own id.
+                </p>
+                <p>
+                    An OOB-only response updates its targets and leaves the main target
+                    untouched. The response is sanitized before OOB elements are applied;
+                    the secure build preserves Minu protocol attributes through DOMPurify.
+                </p>
+            </section>
+
+            <section id="sse">
+                <h2>Server-sent events</h2>
+                <pre><code>&lt;div minu-sse="/events/prices"
+     minu-sse-event="price"
+     minu-target="#price"
+     minu-swap="innerHTML"&gt;&lt;/div&gt;
+
+&lt;div id="price"&gt;$0.00&lt;/div&gt;
+&lt;div id="ticker"&gt;waiting…&lt;/div&gt;</code></pre>
+                <pre><code>event: price
+data: &lt;span class="price"&gt;$42.00&lt;/span&gt;&lt;div id="ticker" minu-oob="#ticker"&gt;42 ms&lt;/div&gt;</code></pre>
+                <table>
+                    <thead><tr><th>Attribute</th><th>Behavior</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>minu-sse</code></td><td>URL opened with native <code>EventSource</code> on init.</td></tr>
+                        <tr><td><code>minu-sse-event</code></td><td>Comma-separated event names. Default <code>message</code>.</td></tr>
+                        <tr><td><code>minu-target</code>, <code>minu-swap</code></td><td>Same target and swap pipeline as requests.</td></tr>
+                    </tbody>
+                </table>
+                <p>
+                    <code>EventSource</code> reconnects automatically. <code>retry:</code>
+                    and <code>id:</code> work as usual. Cross-origin streams need CORS.
+                    Disable proxy buffering with <code>X-Accel-Buffering: no</code>.
+                </p>
+                <p>
+                    Chat sends use normal <code>minu-post</code>; only the receive side is
+                    a stream. WebSocket support is not included.
+                </p>
+            </section>
+
+            <section id="json">
+                <h2>JSON boundary</h2>
+                <p>JSON is supported for attribute configuration, not as a wire format.</p>
+                <table>
+                    <thead><tr><th>Use</th><th>Supported</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>minu-vals</code></td><td>Yes</td><td>Parsed with <code>JSON.parse</code>, merged into form values. Nested objects are stringified.</td></tr>
+                        <tr><td><code>minu-headers</code></td><td>Yes</td><td>Parsed with <code>JSON.parse</code>, merged into request headers.</td></tr>
+                        <tr><td>JSON request body</td><td>No</td><td>Bodies are form-encoded or multipart.</td></tr>
+                        <tr><td>JSON response rendering</td><td>No</td><td>Responses are read as text and treated as HTML fragments.</td></tr>
+                    </tbody>
+                </table>
+                <p>
+                    For a JSON API, render HTML on the server from the JSON, or use native
+                    <code>fetch</code> plus your own renderer.
+                </p>
+            </section>
+
+            <section id="security">
+                <h2>Security</h2>
+                <p>
+                    <code>minu.js</code> strips <code>&lt;script&gt;</code> and
+                    <code>&lt;style&gt;</code> blocks, inline event handlers, and
+                    <code>javascript:</code> URLs. Regex sanitization is not an XSS
+                    boundary.
+                </p>
+                <p>
+                    For untrusted HTML, use <code>minu/secure</code> with DOMPurify. The
+                    secure build throws at load if DOMPurify is missing. It also allows
+                    Minu's protocol attributes through DOMPurify, because OOB and nested
+                    triggers are part of the response format.
+                </p>
+                <p>
+                    The default build is appropriate when the server is trusted. The
+                    secure build is the production path for content you do not control.
+                </p>
+            </section>
+
+            <section id="typescript">
+                <h2>TypeScript</h2>
+                <p>
+                    Types are included. Minu augments <code>DocumentEventMap</code>,
+                    <code>HTMLElementEventMap</code>, and <code>WindowEventMap</code>, so
+                    <code>event.detail</code> is inferred.
+                </p>
+                <pre><code>import minu from 'minu';
+
+minu.init();
+
+document.addEventListener('minu:contentLoaded', (event) =&gt; {
+    const html: string = event.detail.html;
+    console.log(html);
+});</code></pre>
+            </section>
+
+            <section id="examples">
+                <h2>Examples</h2>
+                <p>
+                    The runnable gallery covers twelve scenarios: basic loading, forms,
+                    tabs, search, polling, lazy reveal, swap modes, OOB, response headers,
+                    events, JSON, and SSE.
+                </p>
+                <div class="api-links">
+                    <a class="button" href="../example/">Open the gallery</a>
+                    <a class="button ghost" href="https://github.com/aotr/minu/tree/main/example">View source</a>
+                </div>
+                <p class="api-footnote">
+                    Need the source repository, issues, or contribution rules?
+                    <a href="https://github.com/aotr/minu">GitHub</a> ·
+                    <a href="https://github.com/aotr/minu/blob/main/CONTRIBUTING.md">Contributing</a> ·
+                    <a href="https://github.com/aotr/minu/blob/main/SECURITY.md">Security policy</a>
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <a class="brand footer-brand" href="../" aria-label="Minu home">
+                <img src="../logo.png" alt="" width="32" height="32">
+                <span class="brand-word">minu<i>.</i></span>
+            </a>
+            <p>MIT · built for server-rendered apps.</p>
+        </div>
+        <div class="footer-links">
+            <a href="../">Home</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a href="https://www.npmjs.com/package/minu">npm</a>
+            <a href="https://github.com/aotr/minu/wiki">Wiki</a>
+            <a href="../example/">Examples</a>
+            <a href="https://github.com/aotr/minu/blob/main/SECURITY.md">Security</a>
+        </div>
+    </footer>
+
+    <script src="../release.js"></script>
+</body>
+</html>
