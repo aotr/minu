@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Reference — Minu</title>
-    <meta name="description" content="Minu API reference: attributes, triggers, events, methods, server protocol, SSE, JSON limits, and security.">
+    <title>Minu — HTML fragments, not a framework</title>
+    <meta name="description" content="Minu is a 4 KB HTML fragment loader for server-rendered apps. Forms, polling, OOB updates, and SSE without a SPA.">
     <meta name="theme-color" content="#5a4bff">
     <link rel="canonical" href="https://aotr.github.io/minu/">
     <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="api.css">
+    <link rel="stylesheet" href="site.css">
 </head>
 <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#reference">Skip to content</a>
     <header class="site-header">
-        <a class="brand" href="./" aria-label="Minu home">
-            <img src="logo.png" alt="" width="36" height="36">
+        <a class="brand" href="home/" aria-label="Minu home">
+            <img src="logo.png" alt="" width="38" height="38">
             <span class="brand-word">minu<i>.</i></span>
         </a>
         <nav>
@@ -27,7 +31,89 @@
         </nav>
     </header>
 
-    <main class="api-layout" id="main">
+    <section class="masthead">
+        <div class="masthead-copy">
+            <p class="eyebrow">v<span data-release="version">1.6.1</span> · <span data-release="gzipLabel">4.0 KB</span> gzip · zero runtime deps</p>
+            <h1>HTML fragments,<br><em>not a framework.</em></h1>
+            <p class="lede">Minu fetches server-rendered HTML and puts it where it belongs. Forms, polling, out-of-band updates, and SSE without a SPA, a router, or a build step.</p>
+            <div class="masthead-actions">
+                <a class="button" href="#reference">Read the reference</a>
+                <a class="button ghost" href="https://github.com/aotr/minu">View source</a>
+            </div>
+            <div class="install">
+                <code>npm install minu</code>
+                <button type="button" data-copy="npm install minu">Copy</button>
+            </div>
+        </div>
+
+        <div class="exchange" aria-label="Live fragment exchange">
+            <div class="exchange-bar">
+                <span class="exchange-dots"><i></i><i></i><i></i></span>
+                <span>fragment exchange</span>
+                <span class="exchange-live">live</span>
+            </div>
+            <div class="exchange-body">
+                <div class="exchange-pane request-pane">
+                    <p class="pane-label">request</p>
+                    <pre><code>&lt;div
+  minu-get="/widgets/price"
+  minu-trigger="every 5s"
+  minu-target="#price"&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+                <div class="exchange-flow" aria-hidden="true">
+                    <span>HTML</span>
+                    <i></i>
+                </div>
+                <div class="exchange-pane response-pane">
+                    <p class="pane-label">response</p>
+                    <div minu-get="demo-price.html" minu-trigger="load" minu-target="#preview-price">
+                        <div id="preview-price" class="price-loading">Loading fragment…</div>
+                    </div>
+                </div>
+            </div>
+            <div class="exchange-foot">
+                <span>server-rendered</span>
+                <span>no client templates</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="proof-strip" aria-label="Minu facts">
+        <div><strong>0</strong><span>runtime dependencies</span></div>
+        <div><strong data-release="gzipLabel">4.0 KB</strong><span>minified + gzipped</span></div>
+        <div><strong data-release="tests">18</strong><span>tests passing</span></div>
+        <div><strong>MIT</strong><span>open source</span></div>
+    </section>
+
+    <section class="principles">
+        <div class="principles-head">
+            <div>
+                <p class="eyebrow">The small surface</p>
+                <p class="principles-note">A fragment loader only needs three decisions: what to request, where to put it, and what to do when it changes.</p>
+            </div>
+            <h2>Three moves, then get out of the way.</h2>
+        </div>
+        <div class="principle-grid">
+            <article class="principle">
+                <span class="principle-num">01</span>
+                <h3>Request</h3>
+                <p>One attribute sets the verb and URL. Forms serialize themselves. Extra values, headers, timeout, and credentials stay available without a config layer.</p>
+            </article>
+            <article class="principle">
+                <span class="principle-num">02</span>
+                <h3>Swap</h3>
+                <p>Point the response at a selector and choose one of eight swap modes. Extract a fragment, update a cart out of band, or do nothing and only fire events.</p>
+            </article>
+            <article class="principle">
+                <span class="principle-num">03</span>
+                <h3>React</h3>
+                <p>Listen with normal DOM events. Poll, reveal, debounce, cancel, and stream with SSE, all through the same target and swap pipeline.</p>
+            </article>
+        </div>
+    </section>
+
+    <main class="api-layout" id="reference">
         <aside class="api-sidebar">
             <p class="eyebrow">Reference</p>
             <input class="api-search" id="api-search" type="search" placeholder="Filter API…" aria-label="Filter API sections" autocomplete="off">
@@ -53,21 +139,10 @@
         </aside>
 
         <div class="api-content">
-            <header class="api-intro">
-                <p class="eyebrow">Minu API reference</p>
-                <h1>Everything in 4 KB.</h1>
-                <p class="lede">
-                    Minu is a declarative HTML fragment loader. Add an attribute, let the
-                    server return HTML, and choose where it lands. This page is the
-                    complete public surface: attributes, triggers, events, methods, server
-                    headers, SSE, JSON limits, and security.
-                </p>
-                <div class="api-meta">
-                    <span>v<span data-release="version">1.6.1</span></span>
-                    <span><span data-release="gzipLabel">4.0 KB</span> min+gzip</span>
-                    <span>zero runtime deps</span>
-                    <span>MIT</span>
-                </div>
+            <header class="api-intro reference-intro">
+                <p class="eyebrow">Reference</p>
+                <h2>Every attribute, event, and method.</h2>
+                <p class="lede">Start with install, then scan the request attributes or jump straight to the event and method tables.</p>
             </header>
             <p class="api-empty" id="api-empty" hidden>No matching sections. Clear the filter to see the whole reference.</p>
 
@@ -535,5 +610,7 @@ document.addEventListener('minu:contentLoaded', (event) =&gt; {
 
     <script src="release.js"></script>
     <script src="api.js"></script>
+    <script src="dist/minu.min.js"></script>
+    <script src="site.js"></script>
 </body>
 </html>
