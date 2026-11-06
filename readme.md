@@ -245,6 +245,19 @@ For a JSON API, render HTML on the server from the JSON, or use `fetch` and
 your own renderer. See the runnable `example/json/` page in the repository for
 the exact boundary.
 
+## Alternatives
+
+Minu is not a drop-in replacement for htmx. Pick the smallest tool that covers what you need.
+
+| If you want | Use |
+|---|---|
+| history, extensions, morphing, and the larger htmx ecosystem | [htmx](https://htmx.org) |
+| the smallest core and are willing to compose separate libraries | [Fixi](https://github.com/bigskysoftware/fixi) |
+| signals and an SSE-first server-driven model | [Datastar](https://data-star.dev) |
+| fragments, forms, polling, OOB, and SSE in one 4 KB build | Minu |
+
+Minu sits between Fixi and htmx. Fixi is smaller and leaves more out. htmx has more features and a much larger ecosystem. Use htmx if you need those features.
+
 ## Security
 
 **Do not open a public issue for a security vulnerability.** Email
