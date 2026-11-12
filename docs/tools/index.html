@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools by Animesh Chakraborty</title>
+    <meta name="description" content="Two small MIT-licensed command line tools by the author of Minu: PixelPress for image compression and hue-shift for editor project colors.">
+    <meta name="theme-color" content="#5a4bff">
+    <link rel="canonical" href="https://aotr.github.io/minu/tools/">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <a class="brand" href="../home/" aria-label="Minu home">
+            <img src="../logo.png" alt="" width="38" height="38">
+            <span class="brand-word">minu<i>.</i></span>
+        </a>
+        <nav>
+            <a href="../home/">Overview</a>
+            <a href="../">API</a>
+            <a href="../example/">Examples</a>
+            <a href="./" class="active" aria-current="page">Tools</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a class="nav-cta" href="https://www.npmjs.com/package/minu">npm ↗</a>
+        </nav>
+    </header>
+
+    <main class="tools-main" id="main">
+        <header class="tools-hero">
+            <p class="eyebrow">Tools by the author of Minu</p>
+            <h1>Two small tools for the messy parts.</h1>
+            <p class="lede">Minu is about sending less JavaScript. These two tools are about preparing the assets and keeping the editor out of your way. Both are MIT licensed and install from npm.</p>
+        </header>
+
+        <div class="tools-grid">
+            <article class="tool-card" id="pixelpress">
+                <p class="tool-kicker">Images</p>
+                <h2>PixelPress</h2>
+                <p class="tool-description">Bulk image compression and transcoding. Point it at a file, folder, or glob and get AVIF, WebP, JPEG, or PNG at responsive widths, with a cache, manifest, HTML report, and ready-to-paste <code>&lt;picture&gt;</code> snippets.</p>
+                <pre class="tool-command"><code>npm install --save-dev pixelpress
+npx pixelpress "public/images/**/*.{jpg,png}" -o dist -f avif,webp</code></pre>
+                <div class="tool-links">
+                    <a class="button" href="https://github.com/aotr/pixelpress">Source</a>
+                    <a class="button ghost" href="https://www.npmjs.com/package/pixelpress">npm</a>
+                </div>
+            </article>
+
+            <article class="tool-card" id="hue-shift">
+                <p class="tool-kicker">Editor</p>
+                <h2>hue-shift</h2>
+                <p class="tool-description">Give every VS Code project its own window colour and every JetBrains project a matching toolbar. A terminal-first Peacock alternative that walks a projects folder in one pass. No extension, no daemon, no config file to hand-edit.</p>
+                <pre class="tool-command"><code>npx hue-shift-cli --random
+# or install it globally:
+npm install -g hue-shift-cli</code></pre>
+                <div class="tool-links">
+                    <a class="button" href="https://aotr.github.io/hue-shift/">Website</a>
+                    <a class="button ghost" href="https://github.com/aotr/hue-shift">Source</a>
+                    <a class="button ghost" href="https://www.npmjs.com/package/hue-shift-cli">npm</a>
+                </div>
+            </article>
+        </div>
+
+        <p class="tools-note">These are separate tools, not Minu plugins. They come from the same small-tool habit: solve one job, keep the install simple, and document the edges.</p>
+
+        <div class="tools-back">
+            <a class="button ghost" href="../home/">← Back to Minu</a>
+            <a class="button ghost" href="../">API reference</a>
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <a class="brand footer-brand" href="../home/" aria-label="Minu home">
+                <img src="../logo.png" alt="" width="32" height="32">
+                <span class="brand-word">minu<i>.</i></span>
+            </a>
+            <p>MIT · built for server-rendered apps.</p>
+        </div>
+        <div class="footer-links">
+            <a href="../home/">Overview</a>
+            <a href="../">API</a>
+            <a href="../example/">Examples</a>
+            <a href="./">Tools</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a href="https://www.npmjs.com/package/minu">npm</a>
+        </div>
+    </footer>
+</body>
+</html>

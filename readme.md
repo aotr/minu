@@ -258,6 +258,31 @@ Minu is not a drop-in replacement for htmx. Pick the smallest tool that covers w
 
 Minu sits between Fixi and htmx. Fixi is smaller and leaves more out. htmx has more features and a much larger ecosystem. Use htmx if you need those features.
 
+## Related tools
+
+Two separate MIT-licensed tools by the same author.
+
+### PixelPress
+
+Bulk image compression and transcoding to AVIF, WebP, JPEG, and PNG. It handles globs, responsive widths, transforms, cache, manifests, HTML reports, and `<picture>` snippets.
+
+```bash
+npm install --save-dev pixelpress
+npx pixelpress "public/images/**/*.{jpg,png}" -o dist -f avif,webp
+```
+
+[Source](https://github.com/aotr/pixelpress) · [npm](https://www.npmjs.com/package/pixelpress)
+
+### hue-shift
+
+Give every VS Code project its own window colour and every JetBrains project a matching toolbar. It runs from the terminal, with no extension or daemon.
+
+```bash
+npx hue-shift-cli --random
+```
+
+[Website](https://aotr.github.io/hue-shift/) · [Source](https://github.com/aotr/hue-shift) · [npm](https://www.npmjs.com/package/hue-shift-cli)
+
 ## Security
 
 **Do not open a public issue for a security vulnerability.** Email
