@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="../site.css">
 </head>
 <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
         <a class="brand" href="./" aria-label="Minu home">
             <img src="../logo.png" alt="" width="36" height="36">
@@ -38,7 +38,7 @@
         </nav>
     </header>
 
-    <main id="main">
+    <main id="main-content">
         <section class="hero">
             <div class="hero-copy">
                 <p class="eyebrow">v<span data-release="version">1.6.1</span> · <span data-release="gzipLabel">4.0 KB</span> gzip · zero runtime deps</p>
@@ -245,6 +245,11 @@
                     <h3>hue-shift</h3>
                     <p>One window colour per VS Code project, plus matching JetBrains toolbars, from the terminal.</p>
                 </a>
+
+                <a class="tools-teaser" href="../tools/#open-a11y">
+                    <h3>open-a11y</h3>
+                    <p>A self-hosted accessibility toolbar with 30 tools, 7 profiles, and adapters for every frontend stack.</p>
+                </a>
             </div>
         </section>
     </main>
@@ -292,5 +297,7 @@
 
         minu.init();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@aotr/open-a11y@2.2.1/dist/open-a11y.js" defer></script>
+    <script src="../a11y.js" defer></script>
 </body>
 </html>

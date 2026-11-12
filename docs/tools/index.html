@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../site.css">
 </head>
 <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
         <a class="brand" href="../home/" aria-label="Minu home">
             <img src="../logo.png" alt="" width="38" height="38">
@@ -31,11 +31,11 @@
         </nav>
     </header>
 
-    <main class="tools-main" id="main">
+    <main class="tools-main" id="main-content">
         <header class="tools-hero">
             <p class="eyebrow">Tools by the author of Minu</p>
-            <h1>Two small tools for the messy parts.</h1>
-            <p class="lede">Minu is about sending less JavaScript. These two tools are about preparing the assets and keeping the editor out of your way. Both are MIT licensed and install from npm.</p>
+            <h1>Three small tools for the messy parts.</h1>
+            <p class="lede">Minu is about sending less JavaScript. These three tools are about preparing the assets and keeping the browser and editor out of your way. All are MIT licensed and install from npm.</p>
         </header>
 
         <div class="tools-grid">
@@ -64,6 +64,21 @@ npm install -g hue-shift-cli</code></pre>
                     <a class="button ghost" href="https://www.npmjs.com/package/hue-shift-cli">npm</a>
                 </div>
             </article>
+
+            <article class="tool-card" id="open-a11y">
+                <p class="tool-kicker">Accessibility</p>
+                <h2>open-a11y</h2>
+                <p class="tool-description">A framework-agnostic accessibility toolbar with 30 tools and 7 profiles. It ships as web components with adapters for Vanilla JS, React, Vue, Svelte, Angular, Laravel, Blade, and Livewire. Preferences persist locally, and the widget is self-hosted.</p>
+                <pre class="tool-command"><code>npm install @aotr/open-a11y
+// or load the browser bundle:
+// dist/open-a11y.js</code></pre>
+                <div class="tool-links">
+                    <a class="button" href="https://aotr.github.io/open-a11y/">Website</a>
+                    <a class="button ghost" href="https://github.com/aotr/open-a11y">Source</a>
+                    <a class="button ghost" href="https://www.npmjs.com/package/@aotr/open-a11y">npm</a>
+                </div>
+            </article>
+
         </div>
 
         <p class="tools-note">These are separate tools, not Minu plugins. They come from the same small-tool habit: solve one job, keep the install simple, and document the edges.</p>
@@ -91,5 +106,7 @@ npm install -g hue-shift-cli</code></pre>
             <a href="https://www.npmjs.com/package/minu">npm</a>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@aotr/open-a11y@2.2.1/dist/open-a11y.js" defer></script>
+    <script src="../a11y.js" defer></script>
 </body>
 </html>

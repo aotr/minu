@@ -283,6 +283,16 @@ npx hue-shift-cli --random
 
 [Website](https://aotr.github.io/hue-shift/) · [Source](https://github.com/aotr/hue-shift) · [npm](https://www.npmjs.com/package/hue-shift-cli)
 
+### open-a11y
+
+A self-hosted accessibility toolbar with 30 tools, 7 profiles, keyboard shortcuts, and adapters for Vanilla JS, React, Vue, Svelte, Angular, Laravel Blade, and Livewire. MIT licensed.
+
+```bash
+npm install @aotr/open-a11y
+```
+
+[Website](https://aotr.github.io/open-a11y/) · [Source](https://github.com/aotr/open-a11y) · [npm](https://www.npmjs.com/package/@aotr/open-a11y)
+
 ## Security
 
 **Do not open a public issue for a security vulnerability.** Email
