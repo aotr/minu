@@ -38,8 +38,9 @@ body::before {
 }
 
 .site-header .brand img {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
 }
 
 .site-header nav {

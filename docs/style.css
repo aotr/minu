@@ -80,9 +80,9 @@ pre code {
 
 .brand img {
     display: block;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
 }
 
 .brand-word i {
@@ -95,8 +95,9 @@ pre code {
 }
 
 .footer-brand img {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
 }
 
 .site-header nav {
