@@ -19,8 +19,8 @@ minu.init();
 CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.min.js"
-        integrity="sha384-bvb7Fc/vjU8Hm+hZrH6DCXG2zwSdtAR52XhVqqXL0xGLeY8xcpKmijAxMAzcFVhP"
+<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"
+        integrity="sha384-Zo0kkKIdcBsQ9EDhfwtcalWnfhr4iFXgKmLXcb49cijlVSesV65lolzvMXWMESSP"
         crossorigin="anonymous"></script>
 <script>minu.init();</script>
 ```
@@ -28,7 +28,7 @@ CDN:
 ESM CDN:
 
 ```js
-import minu from 'https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.esm.mjs';
+import minu from 'https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.esm.mjs';
 minu.init();
 ```
 
@@ -45,7 +45,7 @@ minu.init();
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.secure.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.secure.min.js"></script>
 <script>minu.init();</script>
 ```
 
@@ -255,6 +255,7 @@ A request aborted by a newer request does not fire `minu:afterRequest`. Timeouts
 | `minu.reloadComponents(selector \| string[])` | Re-fetch matching elements with a URL. |
 | `minu.reloadComponent(...)` | Deprecated alias. |
 | `minu.config({ headers, timeout, credentials })` | Merge global request defaults. |
+| `minu.registerSwap(name, handler)` | Register a plugin swap mode. The handler receives `(target, html)`. |
 | `minu.destroy()` | Abort requests, remove listeners, clear timers/observers, close streams, restore disabled controls. |
 | `minu.closeStream(element?)` | Close one SSE stream, or all. |
 
@@ -271,6 +272,37 @@ minu.reloadComponents(['#price', '#cart']);
 minu.closeStream(document.querySelector('[minu-sse]'));
 minu.destroy();
 ```
+
+## Morph plugin
+
+Morphing preserves matching nodes, focus, text selection, and scroll position. It is a separate 0.9 KB module.
+
+```js
+import minu from 'minu';
+import morph from 'minu/morph';
+
+minu.registerSwap('morph', morph);
+minu.init();
+```
+
+```html
+<div minu-get="/inbox" minu-trigger="every 10s" minu-swap="morph">
+    <input name="reply">
+</div>
+```
+
+CDN:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.morph.min.js"></script>
+<script>
+    minu.registerSwap('morph', minuMorph);
+    minu.init();
+</script>
+```
+
+OOB works too: `minu-oob="morph:#cart"`.
 
 ## Server protocol
 

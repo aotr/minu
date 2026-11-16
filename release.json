@@ -1,8 +1,8 @@
 {
-  "version": "1.6.1",
-  "gzip": 4090,
+  "version": "1.7.0",
+  "gzip": 4122,
   "gzipLabel": "4.0 KB",
-  "tests": 18,
+  "tests": 22,
   "examples": [
     {
       "slug": "basic",

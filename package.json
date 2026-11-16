@@ -1,7 +1,7 @@
 {
   "name": "minu",
-  "version": "1.6.1",
-  "description": "Lightweight HTML fragment loader — AJAX, polling, and live SSE content with zero dependencies",
+  "version": "1.7.0",
+  "description": "Lightweight HTML fragment loader \u2014 AJAX, polling, and live SSE content with zero dependencies",
   "main": "dist/minu.min.js",
   "module": "dist/minu.esm.mjs",
   "exports": {
@@ -14,10 +14,16 @@
       "types": "./index.d.ts",
       "import": "./dist/minu.secure.esm.mjs",
       "require": "./dist/minu.secure.min.js"
+    },
+    "./morph": {
+      "types": "./morph.d.ts",
+      "import": "./dist/minu.morph.esm.mjs",
+      "require": "./dist/minu.morph.min.js"
     }
   },
   "files": [
     "dist/",
+    "morph.d.ts",
     "index.d.ts",
     "readme.md",
     "CHANGELOG.md",

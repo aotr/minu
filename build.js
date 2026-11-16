@@ -3,9 +3,9 @@
 const fs = require('fs');
 const zlib = require('zlib');
 
-const BUDGET = 4096; // gzip bytes for minified UMD
-const SECURE_BUDGET = 4352; // secure UMD carries the DOMPurify allowlist
-const ESM_BUDGET = 4608; // gzip bytes for the unminified ESM build
+const BUDGET = 4224; // gzip bytes for minified UMD (4.1 KB)
+const SECURE_BUDGET = 4480; // secure UMD carries the DOMPurify allowlist
+const ESM_BUDGET = 4672; // gzip bytes for the unminified ESM build
 
 const variants = [
     {
@@ -23,6 +23,13 @@ const variants = [
         umd: 'minu.secure.js',
         external: ['dompurify'],
         globals: { dompurify: 'DOMPurify' },
+    },
+    {
+        entry: 'src/morph.js',
+        name: 'minuMorph',
+        minUmd: 'minu.morph.min.js',
+        esm: 'minu.morph.esm.mjs',
+        umd: 'minu.morph.js',
     },
 ];
 

@@ -71,6 +71,12 @@ declare namespace minu {
     function reloadComponents(selectors: string | string[]): void;
 
     /**
+     * Register a plugin swap mode, e.g. `registerSwap('morph', morph)`.
+     * The handler receives the target element and the response HTML.
+     */
+    function registerSwap(name: string, handler: (target: Element, html: string) => void): void;
+
+    /**
      * @deprecated Use `reloadComponents` instead.
      */
     function reloadComponent(selectors: string | string[]): void;

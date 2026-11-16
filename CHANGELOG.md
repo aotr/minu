@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.7.0 — 2026-11-16
+
+- Added a plugin swap seam: `minu.registerSwap(name, handler)`.
+- Added the opt-in morph swap plugin (`minu/morph`, 0.9 KB gzip) that preserves
+  matching nodes, focus, text selection, and scroll position.
+- Added the [Coming from htmx](https://aotr.github.io/minu/from-htmx/) guide.
+- Added the repository banner and project-page social image.
+
 ## 1.6.1 — 2026-10-30
 
 - Added [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).

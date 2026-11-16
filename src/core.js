@@ -85,6 +85,7 @@ const appendControl = (data, node) => {
 
 export function createMinu(sanitize) {
     const settings = { headers: {}, timeout: 0, credentials: '' };
+    const swaps = {};
     const initialized = new Set();
     const states = new Map();
     const busyNodes = new Map();
@@ -195,7 +196,10 @@ export function createMinu(sanitize) {
 
     const swap = (target, html, mode) => {
         if (!target) return;
-        switch ((mode || 'innerHTML').toLowerCase()) {
+        const name = (mode || 'innerHTML').toLowerCase();
+        const custom = swaps[name];
+        if (custom) return custom(target, html);
+        switch (name) {
             case 'none':
                 return;
             case 'outerhtml':
@@ -614,11 +618,14 @@ export function createMinu(sanitize) {
         busyNodes.clear();
     };
 
+    const registerSwap = (name, handler) => (swaps[name.toLowerCase()] = handler);
+
     return {
         init,
         reloadComponent,
         reloadComponents,
         config,
+        registerSwap,
         destroy,
         closeStream,
     };

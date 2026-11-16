@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming from htmx — Minu</title>
+    <meta name="description" content="Move an htmx page to Minu: attribute map, trigger differences, events, OOB swaps, SSE, and the opt-in morph plugin.">
+    <meta name="theme-color" content="#5a4bff">
+    <meta property="og:title" content="Coming from htmx — Minu">
+    <meta property="og:description" content="The attribute map and the deliberate differences between htmx and Minu.">
+    <meta property="og:image" content="https://aotr.github.io/minu/banner.png">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="640">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://aotr.github.io/minu/from-htmx/">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <a class="brand" href="../home/" aria-label="Minu home">
+            <img src="../logo.png" alt="" width="52" height="52">
+            <span class="brand-word">minu<i>.</i></span>
+        </a>
+        <nav>
+            <a href="../home/">Overview</a>
+            <a href="../">API</a>
+            <a href="../example/">Examples</a>
+            <a href="./" class="active" aria-current="page">Migrate</a>
+            <a href="../tools/">Tools</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a class="nav-cta" href="https://www.npmjs.com/package/minu">npm ↗</a>
+        </nav>
+    </header>
+
+    <main class="tools-main migrate-main" id="main-content">
+        <header class="tools-hero">
+            <p class="eyebrow">Coming from htmx</p>
+            <h1>Same idea.<br>Far fewer parts.</h1>
+            <p class="lede">Minu covers the common htmx workflow in about 4 KB. Most pages move by renaming attributes. A few things — history, extension hooks, attribute inheritance — are deliberately absent, and saying so is the point.</p>
+        </header>
+
+        <section class="migrate-section" id="quick-map">
+            <h2>The short version</h2>
+            <p>Rename the prefix. Everything else works the same unless the table below says otherwise.</p>
+            <pre><code>&lt;!-- htmx --&gt;
+&lt;button hx-get="/cart" hx-target="#cart" hx-swap="innerHTML"&gt;Refresh&lt;/button&gt;
+
+&lt;!-- minu --&gt;
+&lt;button minu-get="/cart" minu-target="#cart" minu-swap="innerHTML"&gt;Refresh&lt;/button&gt;</code></pre>
+            <p>Form posts, polling, OOB updates, and SSE map the same way:</p>
+            <pre><code>&lt;form hx-post="/save" hx-target="#result"&gt;
+&lt;form minu-post="/save" minu-target="#result"&gt;
+
+&lt;div hx-get="/price" hx-trigger="every 5s"&gt;
+&lt;div minu-get="/price" minu-trigger="every 5s"&gt;</code></pre>
+        </section>
+
+        <section class="migrate-section" id="attributes">
+            <h2>Attribute map</h2>
+            <p>htmx 2.x names are shown; htmx 4 renamed a few attributes in its own upgrade guide. The Minu side is stable.</p>
+            <div class="table-wrap">
+                <table class="migrate-table">
+                    <thead>
+                        <tr><th>htmx</th><th>Minu</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>hx-get</code> <code>hx-post</code> <code>hx-put</code> <code>hx-patch</code> <code>hx-delete</code></td><td><code>minu-get</code> <code>minu-post</code> <code>minu-put</code> <code>minu-patch</code> <code>minu-delete</code></td><td>Same verbs.</td></tr>
+                        <tr><td><code>hx-target</code></td><td><code>minu-target</code></td><td><code>this</code> is supported.</td></tr>
+                        <tr><td><code>hx-swap</code></td><td><code>minu-swap</code></td><td>No <code>swap:</code>, <code>settle:</code>, or <code>transition:</code> modifiers.</td></tr>
+                        <tr><td><code>hx-trigger</code></td><td><code>minu-trigger</code></td><td>One event per element. Modifiers below.</td></tr>
+                        <tr><td><code>hx-vals</code></td><td><code>minu-vals</code></td><td>JSON object; no <code>js:</code> prefix.</td></tr>
+                        <tr><td><code>hx-include</code></td><td><code>minu-include</code></td><td>Selector or comma-separated selectors.</td></tr>
+                        <tr><td><code>hx-headers</code></td><td><code>minu-headers</code></td><td>JSON object.</td></tr>
+                        <tr><td><code>hx-indicator</code></td><td><code>minu-indicator</code></td><td>Adds <code>minu-requesting</code> during the request.</td></tr>
+                        <tr><td><code>hx-disabled-elt</code></td><td><code>minu-disable</code></td><td>Selector, <code>self</code>, or <code>this</code>.</td></tr>
+                        <tr><td><code>hx-confirm</code></td><td><code>minu-confirm</code></td><td>Native <code>confirm()</code>.</td></tr>
+                        <tr><td><code>hx-select</code></td><td><code>minu-select</code></td><td>Extract before swapping.</td></tr>
+                        <tr><td><code>hx-swap-oob</code></td><td><code>minu-oob</code></td><td>Default is <code>outerHTML</code> on the selector.</td></tr>
+                        <tr><td><code>sse-connect</code> + <code>sse-swap</code></td><td><code>minu-sse</code> + <code>minu-sse-event</code></td><td>SSE is built in, not an extension.</td></tr>
+                        <tr><td><code>hx-boost</code>, <code>hx-push-url</code>, <code>hx-replace-url</code></td><td>—</td><td>No history layer. Keep server routes.</td></tr>
+                        <tr><td><code>hx-ext</code>, <code>hx-on</code></td><td>—</td><td>Use normal event listeners and browser APIs.</td></tr>
+                        <tr><td><code>hx-inherit</code>, <code>hx-disinherit</code></td><td>—</td><td>Minu never inherited, so nothing to undo.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="migrate-section" id="triggers">
+            <h2>Triggers</h2>
+            <p>The modifier grammar carries over. A comma-separated trigger list does not — put each event on its own element, or use <code>from:</code> to watch another element.</p>
+            <div class="table-wrap">
+                <table class="migrate-table">
+                    <thead>
+                        <tr><th>htmx</th><th>Minu</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>hx-trigger="click"</code></td><td><code>minu-trigger="click"</code></td></tr>
+                        <tr><td><code>hx-trigger="every 5s"</code></td><td><code>minu-trigger="every 5s"</code></td></tr>
+                        <tr><td><code>hx-trigger="revealed"</code></td><td><code>minu-trigger="revealed"</code></td></tr>
+                        <tr><td><code>hx-trigger="keyup changed delay:300ms"</code></td><td><code>minu-trigger="keyup changed delay:300ms"</code></td></tr>
+                        <tr><td><code>hx-trigger="click from:#other"</code></td><td><code>minu-trigger="click from:#other"</code></td></tr>
+                        <tr><td><code>hx-trigger="click, keyup"</code></td><td>Not supported. Split the element.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><code>once</code>, <code>changed</code>, <code>delay:</code>, <code>throttle:</code>, <code>from:</code>, <code>load</code>, and <code>intersect</code> all work. Polling pauses while the tab is hidden.</p>
+        </section>
+
+        <section class="migrate-section" id="swaps">
+            <h2>Swap modes</h2>
+            <p>Minu ships the eight modes most apps use: <code>innerHTML</code>, <code>outerHTML</code>, <code>beforebegin</code>, <code>afterbegin</code>, <code>beforeend</code>, <code>afterend</code>, <code>delete</code>, and <code>none</code>.</p>
+            <p>Morphing is not in the core. It is a <a href="../#morph">0.9 KB plugin</a>:</p>
+            <pre><code>import minu from 'minu';
+import morph from 'minu/morph';
+
+minu.registerSwap('morph', morph);
+minu.init();</code></pre>
+            <p>Then use it like any other mode:</p>
+            <pre><code>&lt;div minu-get="/inbox" minu-trigger="every 10s" minu-swap="morph"&gt;
+    &lt;input name="reply"&gt;
+&lt;/div&gt;</code></pre>
+        </section>
+
+        <section class="migrate-section" id="events">
+            <h2>Events</h2>
+            <p>Minu emits <code>minu:</code> events on the element and they bubble. htmx 4’s renamed <code>htmx:phase:action</code> events have no direct equivalent for every phase; these are the useful pairs.</p>
+            <div class="table-wrap">
+                <table class="migrate-table">
+                    <thead>
+                        <tr><th>htmx</th><th>Minu</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>htmx:beforeRequest</code></td><td><code>minu:beforeRequest</code> (cancelable)</td></tr>
+                        <tr><td><code>htmx:afterRequest</code></td><td><code>minu:afterRequest</code></td></tr>
+                        <tr><td><code>htmx:afterSwap</code></td><td><code>minu:contentLoaded</code></td></tr>
+                        <tr><td><code>htmx:responseError</code> / <code>htmx:error</code></td><td><code>minu:contentError</code></td></tr>
+                        <tr><td><code>htmx:sseMessage</code></td><td><code>minu:sseMessage</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <pre><code>document.addEventListener('minu:contentLoaded', (event) =&gt; {
+    console.log(event.detail.url);
+});</code></pre>
+        </section>
+
+        <section class="migrate-section" id="different">
+            <h2>What is deliberately missing</h2>
+            <ul class="migrate-list">
+                <li><strong>Attribute inheritance.</strong> htmx 4 made inheritance explicit; Minu never had it. Put <code>minu-target</code> and <code>minu-swap</code> on the element that makes the request, or use one shared <code>[minu-content]</code>.</li>
+                <li><strong>History and boost.</strong> No <code>hx-push-url</code>, no snapshots, no client router. Your server keeps owning navigation.</li>
+                <li><strong>An extension system.</strong> SSE and OOB are core. Morph is a plugin. Everything else is a normal DOM API.</li>
+                <li><strong>Swap modifiers.</strong> No <code>swap:</code>, <code>settle:</code>, or <code>transition:</code>. Use CSS transitions and the <code>minu:contentLoaded</code> event.</li>
+                <li><strong>JSON responses.</strong> JSON configures attributes only; responses are HTML.</li>
+            </ul>
+        </section>
+
+        <section class="migrate-section" id="checklist">
+            <h2>Migration checklist</h2>
+            <ol class="migrate-list migrate-steps">
+                <li>Load Minu with a script tag or npm, then call <code>minu.init()</code>.</li>
+                <li>Rename <code>hx-</code> to <code>minu-</code>; move any inherited target or swap down to the requesting element.</li>
+                <li>Split comma-separated triggers; keep the modifier grammar.</li>
+                <li>Replace event listeners with the <code>minu:</code> names above.</li>
+                <li>Delete boost, history, and extension code. Add <code>minu/morph</code> only where a swap must preserve DOM state.</li>
+                <li>Run the page and check the network panel; Minu logs invalid selectors and JSON instead of failing silently.</li>
+            </ol>
+        </section>
+
+        <div class="tools-back">
+            <a class="button ghost" href="../">API reference</a>
+            <a class="button ghost" href="../home/">Project overview</a>
+            <a class="button ghost" href="https://github.com/aotr/minu">Source</a>
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <a class="brand footer-brand" href="../home/" aria-label="Minu home">
+                <img src="../logo.png" alt="" width="36" height="36">
+                <span class="brand-word">minu<i>.</i></span>
+            </a>
+            <p>MIT · built for server-rendered apps.</p>
+        </div>
+        <div class="footer-links">
+            <a href="../home/">Overview</a>
+            <a href="../">API</a>
+            <a href="../example/">Examples</a>
+            <a href="./">Migrate</a>
+            <a href="../tools/">Tools</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a href="https://www.npmjs.com/package/minu">npm</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@aotr/open-a11y@2.2.1/dist/open-a11y.js" defer></script>
+    <script src="../a11y.js" defer></script>
+</body>
+</html>

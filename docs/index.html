@@ -26,6 +26,7 @@
             <a href="home/">Overview</a>
             <a href="./" class="active" aria-current="page">API</a>
             <a href="example/">Examples</a>
+            <a href="from-htmx/">Migrate</a>
             <a href="tools/">Tools</a>
             <a href="https://github.com/aotr/minu">GitHub</a>
             <a class="nav-cta" href="https://www.npmjs.com/package/minu">npm ↗</a>
@@ -34,7 +35,7 @@
 
     <section class="masthead">
         <div class="masthead-copy">
-            <p class="eyebrow">v<span data-release="version">1.6.1</span> · <span data-release="gzipLabel">4.0 KB</span> gzip · zero runtime deps</p>
+            <p class="eyebrow">v<span data-release="version">1.7.0</span> · <span data-release="gzipLabel">4.0 KB</span> gzip · zero runtime deps</p>
             <h1>HTML fragments,<br><em>not a framework.</em></h1>
             <p class="lede">Minu fetches server-rendered HTML and puts it where it belongs. Forms, polling, out-of-band updates, and SSE without a SPA, a router, or a build step.</p>
             <div class="masthead-actions">
@@ -123,6 +124,7 @@
                 <a href="#initialize">Initialize</a>
                 <a href="#requests">Requests</a>
                 <a href="#swaps">Targets &amp; swaps</a>
+                <a href="#morph">Morph plugin</a>
                 <a href="#forms">Forms &amp; values</a>
                 <a href="#triggers">Triggers</a>
                 <a href="#state">UI state</a>
@@ -136,7 +138,7 @@
                 <a href="#typescript">TypeScript</a>
                 <a href="#examples">Examples</a>
             </nav>
-            <p class="api-version">v<span data-release="version">1.6.1</span> · <span data-release="gzipLabel">4.0 KB</span> gzip</p>
+            <p class="api-version">v<span data-release="version">1.7.0</span> · <span data-release="gzipLabel">4.0 KB</span> gzip</p>
         </aside>
 
         <div class="api-content">
@@ -156,18 +158,18 @@
 minu.init();</code></pre>
 
                 <h3>CDN</h3>
-                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.min.js"
-        integrity="sha384-bvb7Fc/vjU8Hm+hZrH6DCXG2zwSdtAR52XhVqqXL0xGLeY8xcpKmijAxMAzcFVhP"
+                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"
+        integrity="sha384-Zo0kkKIdcBsQ9EDhfwtcalWnfhr4iFXgKmLXcb49cijlVSesV65lolzvMXWMESSP"
         crossorigin="anonymous"&gt;&lt;/script&gt;
 &lt;script&gt;minu.init();&lt;/script&gt;</code></pre>
                 <p>
                     Also available from
-                    <a href="https://unpkg.com/minu@1.6.1/dist/minu.min.js">unpkg</a>.
+                    <a href="https://unpkg.com/minu@1.7.0/dist/minu.min.js">unpkg</a>.
                     Pin a version in production.
                 </p>
 
                 <h3>ESM from CDN</h3>
-                <pre><code>import minu from 'https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.esm.mjs';
+                <pre><code>import minu from 'https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.esm.mjs';
 minu.init();</code></pre>
 
                 <h3>Secure build</h3>
@@ -180,7 +182,7 @@ minu.init();</code></pre>
                 <pre><code>import minu from 'minu/secure';
 minu.init();</code></pre>
                 <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.secure.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.secure.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;minu.init();&lt;/script&gt;</code></pre>
             </section>
 
@@ -277,6 +279,32 @@ minu.init('#account [minu-get]');</code></pre>
         minu-swap="beforeend"&gt;
     Load one more
 &lt;/button&gt;</code></pre>
+
+                <h3 id="morph">Morph plugin</h3>
+                <p>
+                    Morphing preserves matching nodes, focus, text selection, and scroll
+                    position across a swap. It is a separate 0.9 KB module, not part of the
+                    core.
+                </p>
+                <pre><code>import minu from 'minu';
+import morph from 'minu/morph';
+
+minu.registerSwap('morph', morph);
+minu.init();
+
+// &lt;div minu-get="/inbox" minu-swap="morph"&gt;&lt;/div&gt;</code></pre>
+                <p>
+                    Register the plugin before <code>init()</code> if the page uses
+                    <code>minu-swap="morph"</code> on load. The secure build uses the same
+                    registration. From a CDN, the browser bundle exposes
+                    <code>minuMorph</code>:
+                </p>
+                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.morph.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    minu.registerSwap('morph', minuMorph);
+    minu.init();
+&lt;/script&gt;</code></pre>
             </section>
 
             <section id="forms">
@@ -429,6 +457,7 @@ document.addEventListener('minu:contentLoaded', (event) =&gt; {
                         <tr><td><code>minu.reloadComponents(selector | string[])</code></td><td>Re-fetch every matching element that has a URL.</td></tr>
                         <tr><td><code>minu.reloadComponent(...)</code></td><td>Deprecated alias for <code>reloadComponents</code>.</td></tr>
                         <tr><td><code>minu.config({ headers, timeout, credentials })</code></td><td>Merge global request defaults. Per-element headers override global headers.</td></tr>
+                        <tr><td><code>minu.registerSwap(name, handler)</code></td><td>Register a plugin swap mode. The handler receives <code>(target, html)</code>. Use <code>minu/morph</code> for the built-in example.</td></tr>
                         <tr><td><code>minu.destroy()</code></td><td>Abort in-flight requests, remove listeners, clear timers and observers, close SSE streams, restore disabled controls.</td></tr>
                         <tr><td><code>minu.closeStream(element?)</code></td><td>Close one SSE stream, or all streams when omitted.</td></tr>
                     </tbody>
@@ -603,6 +632,7 @@ document.addEventListener('minu:contentLoaded', (event) =&gt; {
             <a href="home/">Overview</a>
             <a href="https://github.com/aotr/minu">GitHub</a>
             <a href="https://www.npmjs.com/package/minu">npm</a>
+            <a href="from-htmx/">Migrate</a>
             <a href="tools/">Tools</a>
             <a href="https://github.com/aotr/minu/wiki">Wiki</a>
             <a href="example/">Examples</a>

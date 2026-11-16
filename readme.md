@@ -2,7 +2,7 @@
 
 ![Minu — HTML fragments, not a framework](https://aotr.github.io/minu/banner.png)
 
-[API reference](https://aotr.github.io/minu/) · [Project page](https://aotr.github.io/minu/home/) · [npm](https://www.npmjs.com/package/minu) · [Examples](https://aotr.github.io/minu/example/)
+[API reference](https://aotr.github.io/minu/) · [Project page](https://aotr.github.io/minu/home/) · [Coming from htmx](https://aotr.github.io/minu/from-htmx/) · [npm](https://www.npmjs.com/package/minu) · [Examples](https://aotr.github.io/minu/example/)
 
 Lightweight HTML fragment loader. Fetch and inject server-rendered HTML — with
 AJAX, forms, polling, out-of-band swaps, and live SSE content. Zero runtime
@@ -16,8 +16,8 @@ framework. Your server keeps returning HTML; Minu puts it where it belongs.
 **CDN (UMD):**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.min.js"
-        integrity="sha384-bvb7Fc/vjU8Hm+hZrH6DCXG2zwSdtAR52XhVqqXL0xGLeY8xcpKmijAxMAzcFVhP"
+<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"
+        integrity="sha384-Zo0kkKIdcBsQ9EDhfwtcalWnfhr4iFXgKmLXcb49cijlVSesV65lolzvMXWMESSP"
         crossorigin="anonymous"></script>
 <script>
     minu.init();
@@ -25,12 +25,12 @@ framework. Your server keeps returning HTML; Minu puts it where it belongs.
 ```
 
 Also available from unpkg:
-`https://unpkg.com/minu@1.6.1/dist/minu.min.js`
+`https://unpkg.com/minu@1.7.0/dist/minu.min.js`
 
 **CDN (ESM):**
 
 ```js
-import minu from 'https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.esm.mjs';
+import minu from 'https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.esm.mjs';
 minu.init();
 ```
 
@@ -165,6 +165,7 @@ document.getElementById('save').addEventListener('minu:beforeRequest', (event) =
 | `minu.reloadComponents(selector \| selector[])` | Re-fetch matching elements |
 | `minu.reloadComponent(...)` | Deprecated alias |
 | `minu.config({ headers, timeout, credentials })` | Global request defaults |
+| `minu.registerSwap(name, handler)` | Register a plugin swap mode (`target, html`) |
 | `minu.destroy()` | Abort requests, remove listeners, close streams |
 | `minu.closeStream(element?)` | Close one or all SSE streams |
 
@@ -174,6 +175,41 @@ minu.config({
     timeout: 10000,
 });
 ```
+
+## Morph swaps (plugin)
+
+Morphing preserves matching nodes, focus, text selection, and scroll position
+across a swap. It ships as a separate 0.9 KB module so the core stays small.
+
+```js
+import minu from 'minu';
+import morph from 'minu/morph';
+
+minu.registerSwap('morph', morph);
+minu.init();
+```
+
+From a CDN, the browser bundle exposes `minuMorph`:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.morph.min.js"></script>
+<script>
+    minu.registerSwap('morph', minuMorph);
+    minu.init();
+</script>
+```
+
+Then use `morph` like any other swap mode:
+
+```html
+<div minu-get="/inbox" minu-trigger="every 10s" minu-swap="morph">
+    <input name="reply">
+</div>
+```
+
+The secure build uses the same registration. Morph also works for OOB:
+`minu-oob="morph:#cart"`.
 
 ## Server Protocol
 
@@ -253,10 +289,10 @@ Minu is not a drop-in replacement for htmx. Pick the smallest tool that covers w
 
 | If you want | Use |
 |---|---|
-| history, extensions, morphing, and the larger htmx ecosystem | [htmx](https://htmx.org) |
+| history, extensions, and the larger htmx ecosystem | [htmx](https://htmx.org) |
 | the smallest core and are willing to compose separate libraries | [Fixi](https://github.com/bigskysoftware/fixi) |
 | signals and an SSE-first server-driven model | [Datastar](https://data-star.dev) |
-| fragments, forms, polling, OOB, and SSE in one 4 KB build | Minu |
+| fragments, forms, polling, OOB, SSE, and opt-in morph in ~4 KB | Minu |
 
 Minu sits between Fixi and htmx. Fixi is smaller and leaves more out. htmx has more features and a much larger ecosystem. Use htmx if you need those features.
 
@@ -321,7 +357,7 @@ CDN secure build:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/minu@1.6.1/dist/minu.secure.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.secure.min.js"></script>
 <script>minu.init();</script>
 ```
 

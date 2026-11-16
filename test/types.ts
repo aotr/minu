@@ -1,9 +1,11 @@
 import minu from 'minu';
+import morph from 'minu/morph';
 
 minu.init();
 minu.config({ headers: { 'X-Test': '1' }, timeout: 1000, credentials: 'include' });
 minu.reloadComponents(['#a', '#b']);
 minu.reloadComponent('#a');
+minu.registerSwap('morph', morph);
 minu.closeStream();
 minu.destroy();
 
