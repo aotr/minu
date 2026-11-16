@@ -305,8 +305,8 @@ Two separate MIT-licensed tools by the same author.
 Bulk image compression and transcoding to AVIF, WebP, JPEG, and PNG. It handles globs, responsive widths, transforms, cache, manifests, HTML reports, and `<picture>` snippets.
 
 ```bash
-npm install --save-dev pixelpress
 npx pixelpress "public/images/**/*.{jpg,png}" -o dist -f avif,webp
+# no install needed; add --save-dev when you want it in the build
 ```
 
 [Website](https://aotr.github.io/pixelpress/) · [Source](https://github.com/aotr/pixelpress) · [npm](https://www.npmjs.com/package/pixelpress)
