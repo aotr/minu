@@ -309,7 +309,7 @@ npm install --save-dev pixelpress
 npx pixelpress "public/images/**/*.{jpg,png}" -o dist -f avif,webp
 ```
 
-[Source](https://github.com/aotr/pixelpress) · [npm](https://www.npmjs.com/package/pixelpress)
+[Website](https://aotr.github.io/pixelpress/) · [Source](https://github.com/aotr/pixelpress) · [npm](https://www.npmjs.com/package/pixelpress)
 
 ### hue-shift
 
