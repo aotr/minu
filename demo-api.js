@@ -70,6 +70,7 @@
         if (path === '/demo/time') return reply(contract.time());
         if (path === '/demo/search') return reply(contract.search(url.searchParams.get('q')));
         if (path === '/demo/fragment') return reply(contract.fragment());
+        if (path === '/demo/morph') return reply(contract.morph());
         if (path === '/demo/oob') return reply(contract.oob());
         if (path === '/demo/trigger') return reply(contract.trigger());
         if (path === '/demo/redirect') return reply(contract.redirect());

@@ -36,6 +36,7 @@ jobs:
           cp demo-api.js release.js release.json site/
           mkdir -p site/dist
           cp dist/minu.min.js site/dist/minu.min.js
+          cp dist/minu.morph.min.js site/dist/minu.morph.min.js
       - uses: actions/configure-pages@v5
         with:
           enablement: true

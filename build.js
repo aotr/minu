@@ -41,6 +41,7 @@ const examples = [
     ['polling', 'Polling', 'every 2s and visibility pause'],
     ['lazy', 'Lazy reveal', 'IntersectionObserver'],
     ['swap', 'Swap modes', 'All eight swap behaviors'],
+    ['morph', 'Morph vs innerHTML', 'Compare a normal swap with the morph plugin'],
     ['oob', 'OOB updates', 'One response, three regions'],
     ['headers', 'Headers', 'Trigger, redirect, refresh'],
     ['events', 'Events', 'Lifecycle and cancel'],

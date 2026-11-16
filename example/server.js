@@ -53,6 +53,7 @@ const handleDemo = async (url, request, response) => {
     if (route === '/demo/time') return reply(demo.time());
     if (route === '/demo/search') return reply(demo.search(url.searchParams.get('q')));
     if (route === '/demo/fragment') return reply(demo.fragment());
+    if (route === '/demo/morph') return reply(demo.morph());
     if (route === '/demo/oob') return reply(demo.oob());
     if (route === '/demo/trigger') return reply(demo.trigger());
     if (route === '/demo/redirect') return reply(demo.redirect());

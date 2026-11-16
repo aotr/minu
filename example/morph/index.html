@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu — Morph vs innerHTML</title>
+    <link rel="stylesheet" href="../shared/style.css">
+    <style>
+        .morph-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .morph-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            padding: 1.1rem;
+            border: 1px solid #e2e0ee;
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .morph-panel h2 {
+            margin: 0;
+            font-size: 1.15rem;
+        }
+
+        .morph-panel h2 span {
+            display: block;
+            margin-top: 0.15rem;
+            color: #6d6a80;
+            font: 0.72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .morph-panel .swap-zone {
+            flex: 1;
+        }
+
+        .morph-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 0 0.8rem;
+            font-size: 0.82rem;
+        }
+
+        .morph-field {
+            display: grid;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .morph-field input {
+            width: 100%;
+            padding: 0.55rem 0.65rem;
+            border: 1px solid #cfcce0;
+            border-radius: 7px;
+            font: inherit;
+            font-weight: 400;
+        }
+
+        .morph-field input:focus {
+            outline: 2px solid #5a4bff;
+            outline-offset: 1px;
+        }
+
+        .morph-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .morph-actions button {
+            flex: 1;
+        }
+
+        @media (max-width: 720px) {
+            .morph-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <p class="crumb"><a href="../">← All examples</a></p>
+    <h1>Morph vs innerHTML</h1>
+    <p class="lede">
+        Both panels re-fetch the same fragment every four seconds. Type into either
+        field and watch what survives the swap. The left uses the default
+        <code>innerHTML</code> swap; the right uses the morph plugin.
+    </p>
+
+    <div class="morph-grid">
+        <section class="morph-panel">
+            <h2>Normal swap <span>minu-swap="innerHTML"</span></h2>
+            <p class="muted">The target’s children are replaced. Input state dies with them.</p>
+            <div id="swap-normal" class="swap-zone"
+                 minu-get="/demo/morph"
+                 minu-trigger="every 4s">Loading…</div>
+            <div class="morph-actions">
+                <button class="btn secondary" type="button"
+                        minu-get="/demo/morph"
+                        minu-trigger="click"
+                        minu-target="#swap-normal"
+                        minu-swap="innerHTML">Refresh now</button>
+            </div>
+        </section>
+
+        <section class="morph-panel">
+            <h2>Morph plugin <span>minu-swap="morph"</span></h2>
+            <p class="muted">Matching nodes are reused. Typed text, focus, and selection stay.</p>
+            <div id="swap-morph" class="swap-zone"
+                 minu-get="/demo/morph"
+                 minu-trigger="every 4s"
+                 minu-swap="morph">Loading…</div>
+            <div class="morph-actions">
+                <button class="btn secondary" type="button"
+                        minu-get="/demo/morph"
+                        minu-trigger="click"
+                        minu-target="#swap-morph"
+                        minu-swap="morph">Refresh now</button>
+            </div>
+        </section>
+    </div>
+
+    <p class="muted">
+        The server keeps changing the field’s <code>value</code> attribute. On the right,
+        the input node is reused, so the browser keeps what you typed. On the left, the
+        input is thrown away and rebuilt from the response.
+    </p>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li>Both targets call the same endpoint, <code>/demo/morph</code>.</li>
+        <li>The left target uses the default swap: replace children with fresh HTML.</li>
+        <li>The right target uses <code>minu-swap="morph"</code>.</li>
+        <li>The morph plugin matches elements by <code>id</code>, position, and tag, then updates attributes and text in place.</li>
+        <li>Register the plugin before <code>minu.init()</code> so the first load already uses morph.</li>
+    </ol>
+
+    <pre><code>&lt;div minu-get="/demo/morph"
+     minu-trigger="every 4s"
+     minu-swap="morph"&gt;&lt;/div&gt;
+
+&lt;script src="../../dist/minu.min.js"&gt;&lt;/script&gt;
+&lt;script src="../../dist/minu.morph.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    minu.registerSwap('morph', minuMorph);
+    minu.init();
+&lt;/script&gt;</code></pre>
+
+    <p class="muted">
+        The plugin is separate from the core build. See
+        <a href="https://aotr.github.io/minu/from-htmx/#swaps">the migration guide</a> and
+        <a href="../swap/">the other swap modes</a>.
+    </p>
+
+    <script src="../demo-contract.js"></script>
+    <script src="../../demo-api.js"></script>
+    <script src="../../dist/minu.min.js"></script>
+    <script src="../../dist/minu.morph.min.js"></script>
+    <script>
+        minu.registerSwap('morph', minuMorph);
+        minu.init();
+    </script>
+</body>
+</html>

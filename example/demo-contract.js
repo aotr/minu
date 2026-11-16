@@ -32,6 +32,7 @@
     const createDemoContract = () => {
         let timeRequests = 0;
         let fragmentRequests = 0;
+        let morphRequests = 0;
         let cartItems = 0;
         let sseTick = 0;
         const now = () => new Date().toLocaleTimeString();
@@ -89,6 +90,23 @@
                             <span class="tag">fragment ${fragmentRequests}</span>
                             <strong>Injected HTML</strong>
                             <p class="muted">Fetched at ${now()}</p>
+                        </div>`,
+                };
+            },
+
+            morph() {
+                morphRequests += 1;
+                return {
+                    html: `
+                        <div class="morph-fragment">
+                            <p class="morph-meta">
+                                <span class="tag">render ${morphRequests}</span>
+                                <span class="muted">server value: “Server draft ${morphRequests}”</span>
+                            </p>
+                            <label class="morph-field">
+                                Draft note
+                                <input name="draft" value="Server draft ${morphRequests}" autocomplete="off">
+                            </label>
                         </div>`,
                 };
             },
