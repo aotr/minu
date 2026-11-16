@@ -40,6 +40,11 @@
       "description": "All eight swap behaviors"
     },
     {
+      "slug": "morph",
+      "title": "Morph vs innerHTML",
+      "description": "Compare a normal swap with the morph plugin"
+    },
+    {
       "slug": "oob",
       "title": "OOB updates",
       "description": "One response, three regions"

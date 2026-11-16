@@ -390,6 +390,8 @@ document.addEventListener('minu:contentLoaded', (event) => {
 });
 ```
 
+- [Morph vs innerHTML](https://aotr.github.io/minu/example/morph/)
+
 ## Examples
 
 The runnable gallery covers twelve scenarios:
