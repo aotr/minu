@@ -1,6 +1,6 @@
 # Minu
 
-![Minu — HTML fragments, not a framework](docs/banner.png)
+![Minu — HTML fragments, not a framework](https://aotr.github.io/minu/banner.png)
 
 [API reference](https://aotr.github.io/minu/) · [Project page](https://aotr.github.io/minu/home/) · [npm](https://www.npmjs.com/package/minu) · [Examples](https://aotr.github.io/minu/example/)
 
