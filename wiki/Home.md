@@ -1,6 +1,6 @@
 # Minu
 
-Minu is a 4.0 KB HTML fragment loader for server-rendered apps. It adds requests, forms, polling, out-of-band swaps, and SSE without a SPA or a build step.
+Minu is a 4.1 KB HTML fragment loader for server-rendered apps. It adds requests, forms, polling, out-of-band swaps, and SSE without a SPA or a build step.
 
 - [API Reference](API-Reference)
 - [Coming from htmx](https://aotr.github.io/minu/from-htmx/)
@@ -20,8 +20,8 @@ npm install minu
 ```
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"
-        integrity="sha384-Zo0kkKIdcBsQ9EDhfwtcalWnfhr4iFXgKmLXcb49cijlVSesV65lolzvMXWMESSP"
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.min.js"
+        integrity="sha384-2R0zeIHughFybo/BG5fVmkUimX5HvrAPvBPdQCnRFPIQ04vJBzyNnx4V1RvJaJGL"
         crossorigin="anonymous"></script>
 <script>minu.init();</script>
 ```

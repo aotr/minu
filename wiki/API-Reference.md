@@ -19,8 +19,8 @@ minu.init();
 CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"
-        integrity="sha384-Zo0kkKIdcBsQ9EDhfwtcalWnfhr4iFXgKmLXcb49cijlVSesV65lolzvMXWMESSP"
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.min.js"
+        integrity="sha384-2R0zeIHughFybo/BG5fVmkUimX5HvrAPvBPdQCnRFPIQ04vJBzyNnx4V1RvJaJGL"
         crossorigin="anonymous"></script>
 <script>minu.init();</script>
 ```
@@ -28,7 +28,7 @@ CDN:
 ESM CDN:
 
 ```js
-import minu from 'https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.esm.mjs';
+import minu from 'https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.esm.mjs';
 minu.init();
 ```
 
@@ -45,7 +45,7 @@ minu.init();
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.secure.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.secure.min.js"></script>
 <script>minu.init();</script>
 ```
 
@@ -77,7 +77,7 @@ One verb attribute selects the request. Order: `get`, `post`, `put`, `patch`, `d
 | `minu-put` | PUT the URL. |
 | `minu-patch` | PATCH the URL. |
 | `minu-delete` | DELETE the URL. |
-| `minu-trigger` | Event or trigger expression. Default `load`. |
+| `minu-trigger` | Event or trigger expression. Default: `submit` on forms, `change` on fields, `click` on buttons, `load` otherwise. |
 | `minu-target` | CSS selector for the target. `this` means the trigger element. |
 | `minu-swap` | Swap mode. Default `innerHTML`. |
 | `minu-vals` | JSON object merged into request values. |
@@ -294,8 +294,8 @@ minu.init();
 CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.morph.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.morph.min.js"></script>
 <script>
     minu.registerSwap('morph', minuMorph);
     minu.init();

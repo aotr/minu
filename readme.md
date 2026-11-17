@@ -6,7 +6,7 @@
 
 Lightweight HTML fragment loader. Fetch and inject server-rendered HTML — with
 AJAX, forms, polling, out-of-band swaps, and live SSE content. Zero runtime
-dependencies, ~4.0 KB gzipped. MIT licensed; contributions welcome.
+dependencies, ~4.1 KB gzipped. MIT licensed; contributions welcome.
 
 Minu is for server-rendered apps that want htmx-style behavior without the
 framework. Your server keeps returning HTML; Minu puts it where it belongs.
@@ -16,8 +16,8 @@ framework. Your server keeps returning HTML; Minu puts it where it belongs.
 **CDN (UMD):**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"
-        integrity="sha384-Zo0kkKIdcBsQ9EDhfwtcalWnfhr4iFXgKmLXcb49cijlVSesV65lolzvMXWMESSP"
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.min.js"
+        integrity="sha384-2R0zeIHughFybo/BG5fVmkUimX5HvrAPvBPdQCnRFPIQ04vJBzyNnx4V1RvJaJGL"
         crossorigin="anonymous"></script>
 <script>
     minu.init();
@@ -25,12 +25,12 @@ framework. Your server keeps returning HTML; Minu puts it where it belongs.
 ```
 
 Also available from unpkg:
-`https://unpkg.com/minu@1.7.0/dist/minu.min.js`
+`https://unpkg.com/minu@1.8.0/dist/minu.min.js`
 
 **CDN (ESM):**
 
 ```js
-import minu from 'https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.esm.mjs';
+import minu from 'https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.esm.mjs';
 minu.init();
 ```
 
@@ -73,7 +73,7 @@ on the page, then the element itself.
 | `minu-get` | Fetch with GET |
 | `minu-post` | Submit with POST |
 | `minu-put` / `minu-patch` / `minu-delete` | Other verbs |
-| `minu-trigger` | Event or trigger expression (default `load`) |
+| `minu-trigger` | Event or trigger expression (default: `submit` on forms, `change` on fields, `click` on buttons, `load` otherwise) |
 | `minu-target` | CSS selector for the swap target (`this` allowed) |
 | `minu-swap` | `innerHTML` (default), `outerHTML`, `beforebegin`, `afterbegin`, `beforeend`, `afterend`, `delete`, `none` |
 | `minu-vals` | JSON object of extra values |
@@ -107,11 +107,14 @@ Prefer `minu-indicator` + CSS. It keeps inline/flex layouts intact:
 
 ## Triggers
 
-`minu-trigger` accepts a DOM event name plus whitespace-separated modifiers:
+`minu-trigger` accepts a DOM event name plus whitespace-separated modifiers.
+When it is omitted, the default follows the element: `<form>` submits,
+`<input>`/`<select>`/`<textarea>` fire on `change`, `<button>` fires on
+`click`, and everything else loads on init.
 
 | Trigger | Meaning |
 |---|---|
-| `load` | On init (default) |
+| `load` | On init. Default for elements that are not forms, fields, or buttons |
 | `click`, `submit`, `change`, `keyup`, … | Any DOM event |
 | `every 5s` | Poll; skips while the tab is hidden |
 | `revealed` | Load once when the element enters the viewport |
@@ -192,8 +195,8 @@ minu.init();
 From a CDN, the browser bundle exposes `minuMorph`:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.morph.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.morph.min.js"></script>
 <script>
     minu.registerSwap('morph', minuMorph);
     minu.init();
@@ -357,7 +360,7 @@ CDN secure build:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.secure.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.secure.min.js"></script>
 <script>minu.init();</script>
 ```
 

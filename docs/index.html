@@ -35,7 +35,7 @@
 
     <section class="masthead">
         <div class="masthead-copy">
-            <p class="eyebrow">v<span data-release="version">1.7.0</span> · <span data-release="gzipLabel">4.0 KB</span> gzip · zero runtime deps</p>
+            <p class="eyebrow">v<span data-release="version">1.8.0</span> · <span data-release="gzipLabel">4.1 KB</span> gzip · zero runtime deps</p>
             <h1>HTML fragments,<br><em>not a framework.</em></h1>
             <p class="lede">Minu fetches server-rendered HTML and puts it where it belongs. Forms, polling, out-of-band updates, and SSE without a SPA, a router, or a build step.</p>
             <div class="masthead-actions">
@@ -83,8 +83,8 @@
 
     <section class="proof-strip" aria-label="Minu facts">
         <div><strong>0</strong><span>runtime dependencies</span></div>
-        <div><strong data-release="gzipLabel">4.0 KB</strong><span>minified + gzipped</span></div>
-        <div><strong data-release="tests">18</strong><span>tests passing</span></div>
+        <div><strong data-release="gzipLabel">4.1 KB</strong><span>minified + gzipped</span></div>
+        <div><strong data-release="tests">31</strong><span>tests passing</span></div>
         <div><strong>MIT</strong><span>open source</span></div>
     </section>
 
@@ -138,7 +138,7 @@
                 <a href="#typescript">TypeScript</a>
                 <a href="#examples">Examples</a>
             </nav>
-            <p class="api-version">v<span data-release="version">1.7.0</span> · <span data-release="gzipLabel">4.0 KB</span> gzip</p>
+            <p class="api-version">v<span data-release="version">1.8.0</span> · <span data-release="gzipLabel">4.1 KB</span> gzip</p>
         </aside>
 
         <div class="api-content">
@@ -158,18 +158,18 @@
 minu.init();</code></pre>
 
                 <h3>CDN</h3>
-                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"
-        integrity="sha384-Zo0kkKIdcBsQ9EDhfwtcalWnfhr4iFXgKmLXcb49cijlVSesV65lolzvMXWMESSP"
+                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.min.js"
+        integrity="sha384-2R0zeIHughFybo/BG5fVmkUimX5HvrAPvBPdQCnRFPIQ04vJBzyNnx4V1RvJaJGL"
         crossorigin="anonymous"&gt;&lt;/script&gt;
 &lt;script&gt;minu.init();&lt;/script&gt;</code></pre>
                 <p>
                     Also available from
-                    <a href="https://unpkg.com/minu@1.7.0/dist/minu.min.js">unpkg</a>.
+                    <a href="https://unpkg.com/minu@1.8.0/dist/minu.min.js">unpkg</a>.
                     Pin a version in production.
                 </p>
 
                 <h3>ESM from CDN</h3>
-                <pre><code>import minu from 'https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.esm.mjs';
+                <pre><code>import minu from 'https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.esm.mjs';
 minu.init();</code></pre>
 
                 <h3>Secure build</h3>
@@ -182,7 +182,7 @@ minu.init();</code></pre>
                 <pre><code>import minu from 'minu/secure';
 minu.init();</code></pre>
                 <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.secure.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.secure.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;minu.init();&lt;/script&gt;</code></pre>
             </section>
 
@@ -219,7 +219,7 @@ minu.init('#account [minu-get]');</code></pre>
                         <tr><td><code>minu-put</code></td><td>PUT the URL.</td></tr>
                         <tr><td><code>minu-patch</code></td><td>PATCH the URL.</td></tr>
                         <tr><td><code>minu-delete</code></td><td>DELETE the URL.</td></tr>
-                        <tr><td><code>minu-trigger</code></td><td>Event or trigger expression. Default <code>load</code>.</td></tr>
+                        <tr><td><code>minu-trigger</code></td><td>Event or trigger expression. Default: <code>submit</code> on forms, <code>change</code> on fields, <code>click</code> on buttons, <code>load</code> otherwise.</td></tr>
                         <tr><td><code>minu-target</code></td><td>CSS selector for the swap target. <code>this</code> means the trigger element.</td></tr>
                         <tr><td><code>minu-swap</code></td><td>Swap mode. Default <code>innerHTML</code>.</td></tr>
                         <tr><td><code>minu-vals</code></td><td>JSON object merged into request values.</td></tr>
@@ -299,8 +299,8 @@ minu.init();
                     registration. From a CDN, the browser bundle exposes
                     <code>minuMorph</code>:
                 </p>
-                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.7.0/dist/minu.morph.min.js"&gt;&lt;/script&gt;
+                <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/minu@1.8.0/dist/minu.morph.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
     minu.registerSwap('morph', minuMorph);
     minu.init();
@@ -347,11 +347,13 @@ minu.init();
                 <p>
                     <code>minu-trigger</code> is a DOM event name plus optional modifiers.
                     The first token is the event. The remaining tokens configure it.
+                    Without it, forms submit, fields fire on <code>change</code>, buttons
+                    on <code>click</code>, and other elements load on init.
                 </p>
                 <table>
                     <thead><tr><th>Token</th><th>Meaning</th></tr></thead>
                     <tbody>
-                        <tr><td><code>load</code></td><td>Run on init. This is the default.</td></tr>
+                        <tr><td><code>load</code></td><td>Run on init. Default for elements that are not forms, fields, or buttons.</td></tr>
                         <tr><td><code>click</code>, <code>submit</code>, <code>change</code>, <code>keyup</code>, …</td><td>Any DOM event.</td></tr>
                         <tr><td><code>every 5s</code></td><td>Poll. Skips ticks while the document is hidden.</td></tr>
                         <tr><td><code>revealed</code></td><td>Load once when the element enters the viewport.</td></tr>

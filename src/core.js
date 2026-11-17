@@ -68,6 +68,16 @@ const parseTrigger = (raw) => {
     return trigger;
 };
 
+// ponytail: tag-aware defaults so renamed htmx markup behaves the same
+// (forms submit, fields change, buttons click). Everything else auto-loads.
+const defaultTrigger = (element) => ({
+    FORM: 'submit',
+    INPUT: 'change',
+    SELECT: 'change',
+    TEXTAREA: 'change',
+    BUTTON: 'click',
+})[element.tagName] || 'load';
+
 const appendControl = (data, node) => {
     if (!node.name || node.disabled) return;
     if (node.tagName === 'SELECT') {
@@ -194,29 +204,57 @@ export function createMinu(sanitize) {
         if (!kinds.size) busyNodes.delete(node);
     };
 
+    const teardown = (element) => {
+        const state = states.get(element);
+        if (!state) return;
+        if (state.controller) state.controller.abort();
+        state.listeners.forEach(([node, type, handler]) => {
+            node.removeEventListener(type, handler);
+        });
+        state.timeouts.forEach((id) => clearTimeout(id));
+        clearTimeout(state.debounce);
+        clearTimeout(state.throttleTimer);
+        if (state.interval) clearInterval(state.interval);
+        if (state.stream) state.stream.close();
+        state.observers.forEach((observer) => observer.disconnect());
+        states.delete(element);
+        initialized.delete(element);
+    };
+
+    // Release components the last swap disconnected (outerHTML, delete,
+    // innerHTML children, or nodes a custom swap discarded).
+    // ponytail: runs after swaps only; components removed by other code are
+    // swept on the page's next swap.
+    const sweep = () => {
+        states.forEach((state, element) => {
+            if (!element.isConnected) teardown(element);
+        });
+    };
+
     const swap = (target, html, mode) => {
         if (!target) return;
         const name = (mode || 'innerHTML').toLowerCase();
         const custom = swaps[name];
-        if (custom) return custom(target, html);
-        switch (name) {
+        if (custom) custom(target, html);
+        else switch (name) {
             case 'none':
-                return;
+                break;
             case 'outerhtml':
                 target.outerHTML = html;
-                return;
+                break;
             case 'beforebegin':
             case 'afterbegin':
             case 'beforeend':
             case 'afterend':
                 target.insertAdjacentHTML(mode.toLowerCase(), html);
-                return;
+                break;
             case 'delete':
                 target.remove();
-                return;
+                break;
             default:
                 target.innerHTML = html;
         }
+        sweep();
     };
 
     const prepareHtml = createResponsePipeline({ sanitize, queryOne, swap }).prepare;
@@ -429,7 +467,7 @@ export function createMinu(sanitize) {
     };
 
     const setupTrigger = (element, state) => {
-        const trigger = parseTrigger(element.getAttribute('minu-trigger'));
+        const trigger = parseTrigger(element.getAttribute('minu-trigger') || defaultTrigger(element));
 
         if (trigger.event === 'every') {
             if (!trigger.interval) return;
@@ -559,7 +597,7 @@ export function createMinu(sanitize) {
 
         const state = getState(element);
         const url = getUrl(element);
-        const trigger = element.getAttribute('minu-trigger') || 'load';
+        const trigger = element.getAttribute('minu-trigger') || defaultTrigger(element);
 
         fire(element, 'minu:contentSetup', {
             url: url || element.getAttribute('minu-sse') || '',
@@ -598,20 +636,7 @@ export function createMinu(sanitize) {
     };
 
     const destroy = () => {
-        states.forEach((state) => {
-            if (state.controller) state.controller.abort();
-            state.listeners.forEach(([node, type, handler]) => {
-                node.removeEventListener(type, handler);
-            });
-            state.timeouts.forEach((id) => clearTimeout(id));
-            clearTimeout(state.debounce);
-            clearTimeout(state.throttleTimer);
-            if (state.interval) clearInterval(state.interval);
-            if (state.stream) state.stream.close();
-            state.observers.forEach((observer) => observer.disconnect());
-        });
-        states.clear();
-        initialized.clear();
+        states.forEach((state, element) => teardown(element));
         busyNodes.forEach((kinds, node) => {
             kinds.forEach((record) => record.stop(node));
         });

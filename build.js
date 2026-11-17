@@ -5,7 +5,7 @@ const zlib = require('zlib');
 
 const BUDGET = 4224; // gzip bytes for minified UMD (4.1 KB)
 const SECURE_BUDGET = 4480; // secure UMD carries the DOMPurify allowlist
-const ESM_BUDGET = 4672; // gzip bytes for the unminified ESM build
+const ESM_BUDGET = 4736; // unminified ESM; +64 for tag-aware trigger defaults + removed-component sweep
 
 const variants = [
     {

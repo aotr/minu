@@ -60,6 +60,7 @@
 
 &lt;div hx-get="/price" hx-trigger="every 5s"&gt;
 &lt;div minu-get="/price" minu-trigger="every 5s"&gt;</code></pre>
+            <p>Trigger defaults line up too: forms submit, buttons click, and form fields fire on <code>change</code>, so renamed markup behaves the same before you add a single trigger.</p>
         </section>
 
         <section class="migrate-section" id="attributes">
@@ -95,6 +96,7 @@
         <section class="migrate-section" id="triggers">
             <h2>Triggers</h2>
             <p>The modifier grammar carries over. A comma-separated trigger list does not — put each event on its own element, or use <code>from:</code> to watch another element.</p>
+            <p>Defaults follow the element, like htmx: a <code>&lt;form&gt;</code> submits, a <code>&lt;button&gt;</code> clicks, and form fields fire on <code>change</code>. One deliberate difference: other elements — a <code>&lt;div&gt;</code>, a section — load immediately on init instead of waiting for a click.</p>
             <div class="table-wrap">
                 <table class="migrate-table">
                     <thead>

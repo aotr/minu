@@ -19,8 +19,9 @@ const morphChildren = (liveParent, incomingParent) => {
 
     const pick = (incoming, index) => {
         if (incoming.nodeType === 1 && incoming.id) {
-            const byId = liveKids.find((node) => !used.has(node) && node.nodeType === 1 && node.id === incoming.id);
-            if (byId) return byId;
+            // An id is identity: never reuse a live node with a different id,
+            // or the new element inherits the old one's typed state.
+            return liveKids.find((node) => !used.has(node) && node.nodeType === 1 && node.id === incoming.id) || null;
         }
 
         const sameIndex = liveKids[index];

@@ -313,3 +313,109 @@ test('the once modifier removes the listener after the first event', async () =>
 
     assert.equal(calls.length, 1);
 });
+
+test('forms default to submit, so nothing posts on init', async () => {
+    setup('<form id="f" minu-post="/save" minu-target="#result"><input name="x" value="1"></form>' +
+        '<div id="result"></div>');
+    const calls = respond('saved');
+
+    minu.init();
+    await tick();
+    assert.equal(calls.length, 0);
+
+    document.getElementById('f').dispatchEvent(
+        new dom.window.Event('submit', { bubbles: true, cancelable: true }));
+    await tick();
+
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].options.method, 'POST');
+});
+
+test('buttons default to click, so nothing loads on init', async () => {
+    setup('<button id="b" minu-get="/x" minu-target="#result">Go</button><div id="result"></div>');
+    const calls = respond('ok');
+
+    minu.init();
+    await tick();
+    assert.equal(calls.length, 0);
+
+    click(document.getElementById('b'));
+    await tick();
+
+    assert.equal(calls.length, 1);
+});
+
+test('inputs default to change, so nothing loads on init', async () => {
+    setup('<input id="q" minu-get="/x" minu-target="#result"><div id="result"></div>');
+    const calls = respond('ok');
+
+    minu.init();
+    await tick();
+    assert.equal(calls.length, 0);
+
+    const field = document.getElementById('q');
+    field.value = 'hi';
+    field.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+    await tick();
+
+    assert.equal(calls.length, 1);
+});
+
+test('a polling component replaced by outerHTML stops requesting', async () => {
+    setup('<div id="poll" minu-get="/frag" minu-trigger="every 5ms" minu-swap="outerHTML">old</div>');
+    const calls = respond('<div id="poll">new</div>');
+
+    minu.init();
+    await tick(30);
+
+    assert.equal(document.getElementById('poll').textContent, 'new');
+    const before = calls.length;
+    await tick(30);
+
+    assert.equal(calls.length, before);
+});
+
+test('an innerHTML swap releases components it removes', async () => {
+    setup('<div id="wrap" minu-get="/wrap" minu-trigger="click">' +
+        '<div id="child" minu-get="/frag" minu-trigger="every 5ms">child</div></div>');
+    const calls = [];
+    global.fetch = async (url) => {
+        calls.push(url);
+        return new Response(url.endsWith('/frag') ? '<div id="child">child 2</div>' : '<p>replaced</p>',
+            { status: 200, headers: {} });
+    };
+
+    minu.init();
+    await tick(30);
+
+    assert.equal(calls.some((url) => url.endsWith('/frag')), true);
+
+    click(document.getElementById('wrap'));
+    await tick(30);
+
+    const before = calls.length;
+    await tick(30);
+
+    assert.equal(calls.length, before);
+});
+
+test('an SSE stream closes when its element is replaced', async () => {
+    setup('<div id="s" minu-sse="/events"></div>' +
+        '<button id="b" minu-get="/frag" minu-target="#s" minu-swap="outerHTML">Go</button>');
+
+    let closed = false;
+    global.EventSource = class {
+        addEventListener() {}
+        close() {
+            closed = true;
+        }
+    };
+    respond('<p>replaced</p>');
+
+    minu.init();
+    click(document.getElementById('b'));
+    await tick();
+
+    assert.equal(closed, true);
+    assert.equal(document.getElementById('s'), null);
+});

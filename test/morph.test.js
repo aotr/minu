@@ -100,3 +100,51 @@ test('morph works as an out-of-band swap mode', async () => {
     assert.equal(total.textContent, '2');
     assert.equal(document.getElementById('app').textContent, 'main');
 });
+
+test('morph does not inherit typed values across different ids', async () => {
+    setup('<div id="app"><input id="a" value="server"><input id="b" value="server"></div>');
+    const app = document.getElementById('app');
+    const b = document.getElementById('b');
+    b.value = 'draft-b';
+
+    morph(app, '<input id="c" value="fresh"><input id="b" value="server">');
+
+    assert.equal(document.getElementById('a'), null);
+    assert.equal(document.getElementById('c').value, 'fresh');
+    assert.equal(document.getElementById('b'), b);
+    assert.equal(b.value, 'draft-b');
+});
+
+test('morph inserts and removes elements by id', async () => {
+    setup('<div id="app"><p id="one">1</p></div>');
+    const app = document.getElementById('app');
+    const one = document.getElementById('one');
+
+    morph(app, '<p id="zero">0</p><p id="one">1b</p><p id="two">2</p>');
+
+    assert.equal(document.getElementById('one'), one);
+    assert.equal(one.textContent, '1b');
+    assert.equal(document.getElementById('zero').textContent, '0');
+    assert.equal(document.getElementById('two').textContent, '2');
+    assert.deepEqual(Array.from(app.children).map((node) => node.id), ['zero', 'one', 'two']);
+
+    morph(app, '<p id="one">1c</p>');
+
+    assert.equal(document.getElementById('one'), one);
+    assert.equal(one.textContent, '1c');
+    assert.equal(document.getElementById('zero'), null);
+    assert.equal(document.getElementById('two'), null);
+});
+
+test('morph preserves values when elements are reordered', async () => {
+    setup('<div id="app"><input id="x" value="a"><input id="y" value="b"></div>');
+    const app = document.getElementById('app');
+    const x = document.getElementById('x');
+    x.value = 'typed-x';
+
+    morph(app, '<input id="y" value="b"><input id="x" value="a">');
+
+    assert.deepEqual(Array.from(app.children).map((node) => node.id), ['y', 'x']);
+    assert.equal(document.getElementById('x'), x);
+    assert.equal(x.value, 'typed-x');
+});

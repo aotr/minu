@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.8.0 — 2026-11-17
+
+- **Changed:** `minu-trigger` now defaults by element: forms submit, form
+  fields fire on `change`, buttons on `click`, and other elements still load
+  on init. Renamed htmx markup behaves the same without explicit triggers.
+- **Fixed:** a component removed by a swap (`outerHTML`, `innerHTML`, `delete`,
+  or a plugin swap) releases its timers, listeners, observers, and SSE stream
+  instead of continuing in the background.
+- **Fixed:** the morph plugin no longer reuses a live element for an incoming
+  element with a different `id`, so typed values no longer leak across
+  identities.
+- Added tests for trigger defaults, removed-component cleanup, and morph
+  identity.
+
 ## 1.7.0 — 2026-11-16
 
 - Added a plugin swap seam: `minu.registerSwap(name, handler)`.

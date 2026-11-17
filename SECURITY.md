@@ -35,8 +35,8 @@ first and ask.
 
 | Version | Supported |
 |---|---|
-| 1.6.x | Yes |
-| Earlier 1.x | Best effort; upgrade to 1.6.x |
+| 1.8.x | Yes |
+| Earlier 1.x | Best effort; upgrade to 1.8.x |
 | 0.x | No |
 
 ## Scope
