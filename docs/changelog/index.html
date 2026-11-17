@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog — Minu</title>
+    <meta name="description" content="Every Minu release, newest first: what changed, what was fixed, and why. The same entries live in CHANGELOG.md.">
+    <meta name="theme-color" content="#5a4bff">
+    <meta property="og:title" content="Changelog — Minu">
+    <meta property="og:description" content="Every Minu release in plain words, newest first.">
+    <meta property="og:image" content="https://aotr.github.io/minu/banner.png">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="640">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://aotr.github.io/minu/changelog/">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <a class="brand" href="../home/" aria-label="Minu home">
+            <img src="../logo.png" alt="" width="52" height="52">
+            <span class="brand-word">minu<i>.</i></span>
+        </a>
+        <nav>
+            <a href="../home/">Overview</a>
+            <a href="../">API</a>
+            <a href="../example/">Examples</a>
+            <a href="../from-htmx/">Migrate</a>
+            <a href="../tools/">Tools</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a class="nav-cta" href="https://www.npmjs.com/package/minu">npm ↗</a>
+        </nav>
+    </header>
+
+    <main class="tools-main migrate-main" id="main-content">
+        <header class="tools-hero">
+            <p class="eyebrow">Changelog</p>
+            <h1>Every release,<br>in plain words.</h1>
+            <p class="lede">What changed and why, newest first. Each release is a small, deliberate step — the core stays around 4 KB and dependency-free. The same entries live in <a href="https://github.com/aotr/minu/blob/main/CHANGELOG.md">CHANGELOG.md</a>.</p>
+        </header>
+
+        <article class="migrate-section release" id="v1-8-0">
+            <p class="release-meta"><span class="release-tag">Latest</span><time datetime="2026-11-17">17 November 2026</time></p>
+            <h2>1.8.0</h2>
+            <ul class="migrate-list">
+                <li><strong>Changed:</strong> <code>minu-trigger</code> now defaults by element: forms submit, form fields fire on <code>change</code>, buttons on <code>click</code>, and other elements still load on init. Renamed htmx markup behaves the same without explicit triggers.</li>
+                <li><strong>Fixed:</strong> a component removed by a swap (<code>outerHTML</code>, <code>innerHTML</code>, <code>delete</code>, or a plugin swap) releases its timers, listeners, observers, and SSE stream instead of continuing in the background.</li>
+                <li><strong>Fixed:</strong> the morph plugin no longer reuses a live element for an incoming element with a different <code>id</code>, so typed values no longer leak across identities.</li>
+                <li>Added tests for trigger defaults, removed-component cleanup, and morph identity.</li>
+            </ul>
+        </article>
+
+        <article class="migrate-section release" id="v1-7-0">
+            <p class="release-meta"><time datetime="2026-11-16">16 November 2026</time></p>
+            <h2>1.7.0</h2>
+            <ul class="migrate-list">
+                <li>Added a plugin swap seam: <code>minu.registerSwap(name, handler)</code>.</li>
+                <li>Added the opt-in morph swap plugin (<code>minu/morph</code>, 0.9 KB gzip) that preserves matching nodes, focus, text selection, and scroll position.</li>
+                <li>Added the <a href="../from-htmx/">Coming from htmx</a> guide.</li>
+                <li>Added the repository banner and project-page social image.</li>
+            </ul>
+        </article>
+
+        <article class="migrate-section release" id="v1-6-1">
+            <p class="release-meta"><time datetime="2026-10-30">30 October 2026</time></p>
+            <h2>1.6.1</h2>
+            <ul class="migrate-list">
+                <li>Added <a href="https://github.com/aotr/minu/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> and <a href="https://github.com/aotr/minu/blob/main/SECURITY.md">SECURITY.md</a>.</li>
+                <li>Added a GitHub Pages project page and per-scenario demo pages.</li>
+                <li>Added a browser-side adapter for the dynamic Pages demos.</li>
+                <li>Extracted the response protocol seam: OOB extraction, sanitization, select, and main payload now live in <code>src/response.js</code>.</li>
+                <li>The secure build now preserves Minu protocol attributes through DOMPurify.</li>
+                <li>Fixed request teardown so a superseded request always releases its loader, indicator, and disabled-state refcounts.</li>
+                <li>Shared the demo endpoint contract between the Node server and Pages adapter.</li>
+                <li>Added secure-build, demo-contract, and overlapping-request tests.</li>
+                <li>Generated <code>release.json</code> and the example gallery from one manifest.</li>
+                <li>Added typed <code>DocumentEventMap</code> / <code>HTMLElementEventMap</code> / <code>WindowEventMap</code> entries so <code>event.detail</code> is inferred for Minu events.</li>
+            </ul>
+        </article>
+
+        <article class="migrate-section release" id="v1-6-0">
+            <p class="release-meta">Earlier release</p>
+            <h2>1.6.0</h2>
+            <ul class="migrate-list">
+                <li>One core with thin UMD/ESM/secure entries; no more duplicated logic.</li>
+                <li>Vite+ (Rolldown) library build with a gzip budget gate.</li>
+                <li>Fixed target/loader resolution for shared content areas.</li>
+                <li>Idempotent <code>init()</code>, request aborts, bubbling events, <code>destroy()</code>.</li>
+                <li>Added POST/PUT/PATCH/DELETE, forms, <code>minu-vals</code>, <code>minu-include</code>, headers, timeout, credentials, confirm, indicator, disable, and <code>minu-select</code>.</li>
+                <li>Added swap modes: <code>outerHTML</code>, <code>beforebegin</code>, <code>afterbegin</code>, <code>beforeend</code>, <code>afterend</code>, <code>delete</code>, <code>none</code>.</li>
+                <li>Added trigger grammar: <code>every</code>, <code>revealed</code>, <code>intersect</code>, <code>once</code>, <code>changed</code>, <code>delay</code>, <code>throttle</code>, <code>from</code>.</li>
+                <li>Added response protocol: <code>Minu-Trigger</code>, <code>Minu-Redirect</code>, <code>Minu-Refresh</code>, and <code>minu-oob</code> out-of-band swaps.</li>
+                <li>Added SSE live content (<code>minu-sse</code>, <code>minu-sse-event</code>).</li>
+                <li>Added a runnable example page for every scenario, served by a zero-dependency demo server (<code>npm run examples</code>).</li>
+                <li>Added tests (node:test + jsdom) and CI.</li>
+                <li>Basic build now strips inline handlers and <code>javascript:</code> URLs. It is still not a security boundary; use <code>minu/secure</code> for untrusted HTML.</li>
+            </ul>
+        </article>
+
+        <article class="migrate-section release" id="v1-1-0">
+            <p class="release-meta">Earlier release</p>
+            <h2>1.1.0</h2>
+            <ul class="migrate-list">
+                <li>Initial packaged release: <code>minu-get</code>, <code>minu-trigger</code>, <code>minu-loader</code>, <code>minu-content</code>, <code>init()</code>, <code>reloadComponents()</code>.</li>
+            </ul>
+        </article>
+
+        <div class="tools-back">
+            <a class="button ghost" href="../">API reference</a>
+            <a class="button ghost" href="../home/">Project overview</a>
+            <a class="button ghost" href="https://github.com/aotr/minu/blob/main/CHANGELOG.md">CHANGELOG.md</a>
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <a class="brand footer-brand" href="../home/" aria-label="Minu home">
+                <img src="../logo.png" alt="" width="36" height="36">
+                <span class="brand-word">minu<i>.</i></span>
+            </a>
+            <p>MIT · built for server-rendered apps.</p>
+        </div>
+        <div class="footer-links">
+            <a href="../home/">Overview</a>
+            <a href="../">API</a>
+            <a href="../example/">Examples</a>
+            <a href="../from-htmx/">Migrate</a>
+            <a href="../tools/">Tools</a>
+            <a href="./">Changelog</a>
+            <a href="https://github.com/aotr/minu">GitHub</a>
+            <a href="https://www.npmjs.com/package/minu">npm</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@aotr/open-a11y@2.2.1/dist/open-a11y.js" defer></script>
+    <script src="../a11y.js" defer></script>
+</body>
+</html>

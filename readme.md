@@ -2,7 +2,7 @@
 
 ![Minu — HTML fragments, not a framework](https://aotr.github.io/minu/banner.png)
 
-[API reference](https://aotr.github.io/minu/) · [Project page](https://aotr.github.io/minu/home/) · [Coming from htmx](https://aotr.github.io/minu/from-htmx/) · [npm](https://www.npmjs.com/package/minu) · [Examples](https://aotr.github.io/minu/example/)
+[API reference](https://aotr.github.io/minu/) · [Project page](https://aotr.github.io/minu/home/) · [Coming from htmx](https://aotr.github.io/minu/from-htmx/) · [Changelog](https://aotr.github.io/minu/changelog/) · [npm](https://www.npmjs.com/package/minu) · [Examples](https://aotr.github.io/minu/example/)
 
 Lightweight HTML fragment loader. Fetch and inject server-rendered HTML — with
 AJAX, forms, polling, out-of-band swaps, and live SSE content. Zero runtime

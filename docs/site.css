@@ -873,3 +873,23 @@ footer {
         width: min(100% - 2rem, 980px);
     }
 }
+
+/* Changelog page */
+.migrate-section .release-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0 0 0.5rem;
+    color: var(--muted);
+    font: 0.7rem var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.release-tag {
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: var(--acid);
+    color: var(--ink);
+    font-weight: 500;
+}
